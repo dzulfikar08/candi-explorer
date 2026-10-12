@@ -1,0 +1,29 @@
+name: New candi
+description: Propose (or volunteer to build) another temple.
+labels: [new-candi]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Candi
+      placeholder: Candi Prambanan (Shiva temple)
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources for plan and dimensions
+      description: Measured plans, conservation reports, papers. The model is procedural, so it needs real numbers.
+    validations:
+      required: true
+  - type: textarea
+    id: features
+    attributes:
+      label: Features worth highlighting
+      description: Candidates for hotspots and the tour.
+  - type: checkboxes
+    id: build
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd like to build this myself

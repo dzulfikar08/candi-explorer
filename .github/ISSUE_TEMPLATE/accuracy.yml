@@ -1,0 +1,24 @@
+name: Accuracy correction
+description: A dimension, count, orientation or historical note is wrong.
+labels: [accuracy]
+body:
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is inaccurate
+      description: Which candi and which part (geometry, hotspot notes, tour text, landmarks).
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should be
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: A published reference (book, paper, conservation report, official site).
+    validations:
+      required: true

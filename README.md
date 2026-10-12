@@ -1,7 +1,19 @@
 # Candi Explorer
 
+[![CI](https://github.com/dzulfikar08/candi-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/dzulfikar08/candi-explorer/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Interactive 3D explorer for Indonesian temples (candi), built with Three.js + Vite. Starts with
 **Candi Borobudur**.
+
+**Live: https://candi-explorer.by.dzulfikar.com**
+
+Requires a browser with WebGL 2. Walk mode needs a mouse and keyboard; orbit and the tour work on
+touch devices.
+
+## Development
+
+Needs [Bun](https://bun.sh) 1.x.
 
 ```bash
 bun install
@@ -45,4 +57,22 @@ walked, carving is stylised, and the stairs are steep approximations.
 
 Implement a `CandiDefinition` (`src/candi/types.ts`): topics, hotspots, horizon landmarks, a home
 camera view, and a `build(textures)` that returns the model, collidable meshes, tour sections and a
-walk spawn point. Then pass it to `start()` in `src/main.ts`.
+walk spawn point. Then pass it to `start()` in `src/main.ts`. See [CONTRIBUTING.md](CONTRIBUTING.md)
+for the full checklist.
+
+## Deploying
+
+`bun run deploy` builds and publishes `dist/` as a Cloudflare Worker with static assets
+(`wrangler.jsonc`). The config is pinned to the maintainer's account and custom domain; in a fork,
+change `account_id` and `routes` (or drop `routes` and set `"workers_dev": true`). `dist/` is a
+plain static site, so any static host works too.
+
+## Contributing
+
+Bug reports, accuracy corrections with sources, and new candi are welcome. Read
+[CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Report security
+issues privately as described in [SECURITY.md](SECURITY.md).
+
+## License
+
+[MIT](LICENSE) © Dzulfikar Ats Tsauri

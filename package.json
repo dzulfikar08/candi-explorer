@@ -20,5 +20,24 @@
     "vite": "^8.3.4",
     "vitest": "^5.0.3",
     "wrangler": "^4.149.0"
-  }
+  },
+  "description": "Interactive procedural 3D explorer for Indonesian temples (candi), starting with Borobudur",
+  "license": "MIT",
+  "author": "Dzulfikar Ats Tsauri <dzulfikar.at@gmail.com>",
+  "homepage": "https://candi-explorer.by.dzulfikar.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzulfikar08/candi-explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dzulfikar08/candi-explorer/issues"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "borobudur",
+    "candi",
+    "indonesia",
+    "cultural-heritage"
+  ]
 }
