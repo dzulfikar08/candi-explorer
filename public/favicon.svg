@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Borobudur in profile: three stepped terraces, the bell-shaped main stupa, its spire. -->
+  <rect width="64" height="64" rx="14" fill="#b5621a"/>
+  <g fill="#f3ede1">
+    <rect x="7" y="47" width="50" height="8" rx="1"/>
+    <rect x="13" y="40" width="38" height="6" rx="1"/>
+    <rect x="19" y="34" width="26" height="5" rx="1"/>
+    <path d="M21.5 33a10.5 10.5 0 0 1 21 0z"/>
+    <rect x="29" y="19" width="6" height="4" rx="0.5"/>
+    <path d="M32 8l2 11h-4z"/>
+  </g>
+</svg>
