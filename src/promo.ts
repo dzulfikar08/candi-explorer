@@ -21,9 +21,9 @@ const PROMOS: Promo[] = [
   { name: "RevKlik", tagline: "Simple web analytics", href: "https://revklik.com", icon: "/ad-icons/revklik.webp" },
   { name: "Cowculator", tagline: "Feed ration calculator & breed tracking for dairy", href: "https://cowculator.id", icon: "/ad-icons/cowculator.ico" },
   { name: "Voltrus", tagline: "Industrial automation tools for macOS & Linux", href: "https://voltrus.id", icon: "/ad-icons/voltrus.ico" },
-  { name: "BriefOK", tagline: "AI decks for consulting, presales & ops", href: "https://briefok.com", icon: "/ad-icons/briefok.svg" },
+  { name: "Paparan AI", tagline: "Documents in, decks out: AI for government, consulting & presales", href: "https://paparanai.id", icon: "/ad-icons/paparanai.svg" },
   { name: "WeLoveOurBaby", tagline: "One place for what's coming, and everything after", href: "https://weloveourbaby.com", icon: "/ad-icons/weloveourbaby.svg" },
-  { name: "OpexMX", tagline: "CMMS: computerized maintenance management", href: "https://opexmx.com", icon: "/ad-icons/opexmx.png" },
+  { name: "OpexMX", tagline: "AI Maintenance eXecution for Operational Excellence", href: "https://opexmx.com", icon: "/ad-icons/opexmx.png" },
   { name: "JoyoDigitama", tagline: "Industrial digitalization & IoT solutions", href: "https://joyodigitama.com", icon: "/ad-icons/joyodigitama.ico" },
   { name: "Waqtu", tagline: "Prayer times in your menu bar for Mac", href: "https://getwaqtu.com", icon: "/ad-icons/waqtu.png" },
 ];
