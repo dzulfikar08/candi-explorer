@@ -55,6 +55,10 @@ export class TourController {
   nextSection(): void {
     const next = this.sectionStarts.find((d) => d > this.distance + 0.01);
     if (next === undefined) {
+      // Already in the last section: finish at the end of the path, as if walked.
+      this.distance = this.length;
+      this.place(true);
+      this.playing = false;
       this.events.onEnd();
       return;
     }

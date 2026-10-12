@@ -446,6 +446,12 @@ input {
     bottom: 140px;
   }
 
+  /* The tour bar takes the slot above the dock; lift the notes sheet above it. */
+  body[data-mode="tour"] .info {
+    bottom: 290px;
+    max-height: 28vh;
+  }
+
   .legend {
     display: none;
   }

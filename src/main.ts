@@ -171,7 +171,8 @@ function start(candi: CandiDefinition): void {
   ui.canvas.addEventListener("click", () => {
     if (mode === "walk" && !walk.locked) walk.lock();
   });
-  const canWalk = window.matchMedia("(any-pointer: fine)").matches;
+  // iPadOS with a trackpad matches a fine pointer but has no Pointer Lock.
+  const canWalk = window.matchMedia("(any-pointer: fine)").matches && "requestPointerLock" in ui.canvas;
 
   const tour = new TourController(camera, model.tour, {
     onSection(i) {
@@ -210,6 +211,7 @@ function start(candi: CandiDefinition): void {
     if (next === "walk" && !canWalk) return;
     const previous = mode;
     mode = next;
+    document.body.dataset.mode = next;
     for (const b of ui.modeButtons) b.setAttribute("aria-pressed", String(b.dataset.mode === next));
     orbit.enabled = next === "orbit";
     ui.hotspots.hidden = next !== "orbit";
