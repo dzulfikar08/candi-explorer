@@ -75,6 +75,11 @@ pauses on hover or focus, stays still with reduced motion, hides in walk mode, a
 to a name pill and hides during the tour. "Your product here" opens an email for sponsor slots.
 Forks should replace or remove it.
 
+## Analytics
+
+`index.html` loads [Revklik](https://revklik.com) (cookieless; bots and datacenter traffic are
+excluded) for the "Candi Explorer" site. Forks should remove the script tag or use their own site id.
+
 ## Contributing
 
 Bug reports, accuracy corrections with sources, and new candi are welcome. Read
