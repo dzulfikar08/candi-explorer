@@ -1,11 +1,13 @@
-import { CANDI, type CandiEntry, REGION_NAMES, type Region } from "../candi";
+import { CANDI, REGION_NAMES, REGIONS, TEMPLES, type Temple } from "../candi";
+import { sourceItems } from "../ui/sources";
 import { matchesQuery } from "../ui/temple-search";
 import { FRAME, INDONESIA, NEIGHBOURS } from "./land";
 
 /**
- * The home page: every temple on a map of Indonesia. Land is SVG in degrees (x = longitude,
- * y = −latitude); markers are HTML buttons laid over it so they keep their size at any zoom.
- * Temples closer than CLUSTER_PX on screen merge into one marker that zooms in when clicked.
+ * The home page: every known temple on a map of Indonesia, the ones built in 3D in full colour and
+ * the rest marked "coming soon". Land is SVG in degrees (x = longitude, y = −latitude); markers are
+ * HTML buttons laid over it so they keep their size at any zoom. Temples closer than CLUSTER_PX on
+ * screen merge into one marker that zooms in when clicked.
  */
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -24,12 +26,20 @@ interface View {
 }
 
 interface Cluster {
-  members: CandiEntry[];
+  members: Temple[];
   x: number;
   y: number;
 }
 
-const point = (c: CandiEntry) => ({ x: c.site.lon, y: -c.site.lat });
+const point = (c: Temple) => ({ x: c.site.lon, y: -c.site.lat });
+
+/** Accessible name for a group of temples, kept short for the big national clusters. */
+const groupLabel = (members: Temple[]) => {
+  const built = members.filter((m) => "load" in m).length;
+  const names = members.slice(0, 5).map((m) => m.name);
+  const rest = members.length - names.length;
+  return `${members.length} temples, ${built} in 3D: ${names.join(", ")}${rest > 0 ? ` and ${rest} more` : ""}. Zoom in`;
+};
 
 export function mountAtlas(root: HTMLElement, focusId: string | null): void {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -41,10 +51,14 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
     <header class="atlas-head">
       <p class="brand-app">Candi Explorer</p>
       <h1>Temples of Indonesia</h1>
-      <p class="atlas-intro">${CANDI.length} temples in 3D, from Batujaya's early brick platforms to the gates of Majapahit. Pick one on the map or from the list.</p>
+      <p class="atlas-intro">${CANDI.length} temples to explore in 3D, from Batujaya's early brick platforms to the gates of Majapahit, and ${TEMPLES.length - CANDI.length} more known temples coming soon. Pick one on the map or from the list.</p>
       <div class="temple-search atlas-search">
         <span class="temple-search-icon"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="7" cy="7" r="4.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.25 10.25L13.5 13.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
         <input type="search" class="search-field" placeholder="Search temples, regencies, islands" aria-label="Search temples" aria-controls="atlas-list" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="mode-group atlas-filter" role="group" aria-label="Which temples">
+        <button type="button" class="tool" data-filter="all" aria-pressed="true">All <span class="atlas-count">${TEMPLES.length}</span></button>
+        <button type="button" class="tool" data-filter="built" aria-pressed="false">In 3D <span class="atlas-count">${CANDI.length}</span></button>
       </div>
     </header>
     <nav class="atlas-list" id="atlas-list" aria-label="Temples by region"></nav>
@@ -57,6 +71,7 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
   const list = panel.querySelector<HTMLElement>(".atlas-list")!;
   const search = panel.querySelector<HTMLInputElement>(".atlas-search input")!;
   const empty = panel.querySelector<HTMLElement>(".atlas-empty")!;
+  const filter = panel.querySelector<HTMLElement>(".atlas-filter")!;
 
   // Map: land, marker layer, zoom controls, selected-temple card.
   const stage = document.createElement("div");
@@ -104,13 +119,15 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
   };
   const toScreen = (p: { x: number; y: number }) => ({ x: (p.x - view.x) * view.scale + size.w / 2, y: (p.y - view.y) * view.scale + size.h / 2 });
 
-  let selected: CandiEntry | null = null;
+  let selected: Temple | null = null;
   let hovered: string | null = null;
+  /** "In 3D" filter: hide the temples that are not built yet, on the map and in the list. */
+  let builtOnly = false;
   const markerPool = new Map<string, HTMLButtonElement>();
 
   const clusters = (): Cluster[] => {
     const out: Cluster[] = [];
-    for (const c of CANDI) {
+    for (const c of builtOnly ? CANDI : TEMPLES) {
       const s = toScreen(point(c));
       const near = out.find((k) => Math.hypot(k.x - s.x, k.y - s.y) < CLUSTER_PX);
       if (near) near.members.push(c);
@@ -126,21 +143,25 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
     for (const k of clusters()) {
       const key = k.members.map((m) => m.id).join("+");
       seen.add(key);
+      const built = k.members.filter((m) => "load" in m).length;
       let el = markerPool.get(key);
       if (!el) {
         el = document.createElement("button");
         el.type = "button";
         el.className = k.members.length > 1 ? "atlas-marker cluster" : "atlas-marker";
-        const [first] = k.members;
+        // Muted when nothing in it can be opened yet.
+        el.classList.toggle("planned", built === 0);
+        // A group is named after a temple you can explore, when it has one.
+        const first = k.members.find((m) => "load" in m) ?? k.members[0];
         if (k.members.length > 1) {
           el.innerHTML = `<span class="atlas-dot" aria-hidden="true">${k.members.length}</span><span class="atlas-label"></span>`;
           el.querySelector(".atlas-label")!.textContent = `${first.name} +${k.members.length - 1}`;
-          el.setAttribute("aria-label", `${k.members.length} temples: ${k.members.map((m) => m.name).join(", ")}. Zoom in`);
+          el.setAttribute("aria-label", groupLabel(k.members));
           el.addEventListener("click", () => fitTo(k.members.map(point)));
         } else {
           el.innerHTML = `<span class="atlas-dot" aria-hidden="true"></span><span class="atlas-label"></span>`;
           el.querySelector(".atlas-label")!.textContent = first.name;
-          el.setAttribute("aria-label", `${first.name}, ${first.location}`);
+          el.setAttribute("aria-label", `${first.name}, ${first.location}${built === 0 ? ", coming soon" : ""}`);
           el.addEventListener("click", () => select(first, false));
         }
         markerPool.set(key, el);
@@ -152,7 +173,8 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
       const isHovered = hovered !== null && ids.includes(hovered);
       el.classList.toggle("selected", isSelected);
       el.classList.toggle("hover", isHovered);
-      placed.push({ k, el, priority: (isSelected || isHovered ? 1000 : 0) + k.members.length });
+      // Labels go to the selection first, then to groups with temples to explore, then to size.
+      placed.push({ k, el, priority: (isSelected || isHovered ? 1e6 : 0) + built * 1000 + k.members.length });
     }
     for (const [key, el] of markerPool) {
       if (seen.has(key)) continue;
@@ -218,30 +240,35 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
     go({ x: mx - (sx - size.w / 2) / scale, y: my - (sy - size.h / 2) / scale, scale }, animate);
   };
 
+  const deselect = () => {
+    selected = null;
+    card.hidden = true;
+    for (const b of list.querySelectorAll("[aria-current]")) b.removeAttribute("aria-current");
+    render();
+  };
+
   // Selecting a temple: zoom until it has its own marker, open its card.
-  const select = (c: CandiEntry, fromList: boolean) => {
+  const select = (c: Temple, fromList: boolean) => {
     selected = c;
     const p = point(c);
-    const nearest = Math.min(...CANDI.filter((o) => o !== c).map((o) => Math.hypot(point(o).x - p.x, point(o).y - p.y)));
+    const others = (builtOnly ? CANDI : TEMPLES).filter((o) => o !== c);
+    const nearest = Math.min(...others.map((o) => Math.hypot(point(o).x - p.x, point(o).y - p.y)));
     const needed = Math.min(MAX_SCALE, SPLIT_PX / nearest);
     go({ x: p.x, y: p.y, scale: Math.max(view.scale, needed) });
     card.innerHTML = `
       <p class="atlas-card-region"></p>
       <h2></h2>
       <p class="atlas-card-location"></p>
+      ${"load" in c ? "" : '<p class="atlas-card-soon"><span class="soon-badge">Coming soon</span> Not built in 3D yet. Read about it:</p><ul class="info-sources atlas-card-sources"></ul>'}
       <div class="atlas-card-actions">
-        <a class="button-primary" href="/${c.id}">Explore in 3D</a>
+        ${"load" in c ? `<a class="button-primary" href="/${c.id}">Explore in 3D</a>` : ""}
         <button type="button" class="tool atlas-card-close">Close</button>
       </div>`;
     card.querySelector(".atlas-card-region")!.textContent = REGION_NAMES[c.region];
     card.querySelector("h2")!.textContent = c.name;
     card.querySelector(".atlas-card-location")!.textContent = c.location;
-    card.querySelector(".atlas-card-close")!.addEventListener("click", () => {
-      selected = null;
-      card.hidden = true;
-      for (const b of list.querySelectorAll("[aria-current]")) b.removeAttribute("aria-current");
-      render();
-    });
+    if (!("load" in c)) card.querySelector(".atlas-card-sources")!.append(...sourceItems(c.sources));
+    card.querySelector(".atlas-card-close")!.addEventListener("click", deselect);
     card.hidden = false;
     for (const b of list.querySelectorAll<HTMLElement>("[data-id]")) {
       if (b.dataset.id === c.id) b.setAttribute("aria-current", "true");
@@ -251,30 +278,30 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
     render();
   };
 
-  // Region list.
-  const regions = [...new Set(CANDI.map((c) => c.region))];
-  for (const region of regions) {
-    const members = CANDI.filter((c) => c.region === region);
+  // Region list: the temples to explore first, then the ones coming soon.
+  for (const region of REGIONS) {
+    const members = TEMPLES.filter((c) => c.region === region);
     const group = document.createElement("section");
     group.className = "atlas-region";
     const head = document.createElement("button");
     head.type = "button";
     head.className = "atlas-region-head";
     head.innerHTML = `<span></span><span class="atlas-count"></span>`;
-    head.firstElementChild!.textContent = REGION_NAMES[region satisfies Region];
-    head.lastElementChild!.textContent = String(members.length);
-    head.setAttribute("aria-label", `${REGION_NAMES[region]}, ${members.length} temples. Show on map`);
-    head.addEventListener("click", () => fitTo(members.map(point)));
+    head.firstElementChild!.textContent = REGION_NAMES[region];
+    head.addEventListener("click", () => {
+      const shown = members.filter((c) => !builtOnly || "load" in c);
+      if (shown.length > 0) fitTo(shown.map(point));
+    });
     const items = document.createElement("ul");
     for (const c of members) {
       const li = document.createElement("li");
       const b = document.createElement("button");
       b.type = "button";
-      b.className = "atlas-item";
+      b.className = "load" in c ? "atlas-item" : "atlas-item planned";
       b.dataset.id = c.id;
-      b.innerHTML = `<span class="atlas-item-name"></span><span class="atlas-item-location"></span>`;
+      b.innerHTML = `<span class="atlas-item-name"></span><span class="atlas-item-location"></span>${"load" in c ? "" : '<span class="soon-badge">Coming soon</span>'}`;
       b.firstElementChild!.textContent = c.name;
-      b.lastElementChild!.textContent = c.location;
+      b.children[1].textContent = c.location;
       b.addEventListener("click", () => select(c, true));
       b.addEventListener("pointerenter", () => {
         hovered = c.id;
@@ -291,24 +318,43 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
     list.append(group);
   }
 
-  // Typing filters the list and fits the map to what's left; Enter opens the first match's card.
-  search.addEventListener("input", () => {
-    const matches = CANDI.filter((c) => matchesQuery(c, search.value));
-    for (const b of list.querySelectorAll<HTMLElement>("[data-id]")) b.closest("li")!.hidden = !matches.some((c) => c.id === b.dataset.id);
+  // The search and the "In 3D" filter decide which list items show; region counts follow.
+  const matches = () => (builtOnly ? CANDI : TEMPLES).filter((c) => matchesQuery(c, search.value));
+  const filterList = () => {
+    const shown = new Set(matches().map((c) => c.id));
+    for (const b of list.querySelectorAll<HTMLElement>("[data-id]")) b.closest("li")!.hidden = !shown.has(b.dataset.id!);
     for (const group of list.querySelectorAll<HTMLElement>(".atlas-region")) {
-      const shown = group.querySelectorAll("li:not([hidden])").length;
-      group.hidden = shown === 0;
-      group.querySelector(".atlas-count")!.textContent = String(shown);
+      const count = group.querySelectorAll("li:not([hidden])").length;
+      const head = group.querySelector<HTMLElement>(".atlas-region-head")!;
+      group.hidden = count === 0;
+      head.lastElementChild!.textContent = String(count);
+      head.setAttribute("aria-label", `${head.firstElementChild!.textContent}, ${count} temples. Show on map`);
     }
-    empty.hidden = matches.length > 0;
+    empty.hidden = shown.size > 0;
     empty.textContent = `No temple matches “${search.value}”. Try a regency or island, like Malang or Sumatra.`;
+  };
+  filterList();
+
+  // Typing fits the map to what's left; Enter opens the first match's card.
+  search.addEventListener("input", () => {
+    filterList();
+    const found = matches();
     if (search.value.trim() === "") showAll();
-    else if (matches.length > 0) fitTo(matches.map(point), fitScale());
+    else if (found.length > 0) fitTo(found.map(point), fitScale());
   });
   search.addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
-    const first = CANDI.find((c) => matchesQuery(c, search.value));
+    const [first] = matches();
     if (first) select(first, false);
+  });
+  filter.addEventListener("click", (e) => {
+    const button = (e.target as HTMLElement).closest<HTMLElement>("[data-filter]");
+    if (!button) return;
+    builtOnly = button.dataset.filter === "built";
+    for (const b of filter.querySelectorAll("[data-filter]")) b.setAttribute("aria-pressed", String(b === button));
+    filterList();
+    if (builtOnly && selected && !("load" in selected)) deselect();
+    else render();
   });
 
   // Pointer pan and pinch, wheel and keyboard zoom.
@@ -398,7 +444,7 @@ export function mountAtlas(root: HTMLElement, focusId: string | null): void {
   new ResizeObserver(resize).observe(stage);
   resize();
 
-  // Coming back from a temple: start on that temple, selected.
-  const from = CANDI.find((c) => c.id === focusId);
+  // Coming back from a temple, or sent from the picker to one coming soon: start on it, selected.
+  const from = TEMPLES.find((c) => c.id === focusId);
   if (from) select(from, false);
 }

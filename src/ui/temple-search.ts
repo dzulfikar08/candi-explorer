@@ -1,8 +1,9 @@
-import { CANDI, type CandiEntry, REGION_NAMES } from "../candi";
+import { type CandiEntry, REGION_NAMES, TEMPLES, type Temple } from "../candi";
 
 /**
- * Searchable temple picker: an editable combobox (WAI-ARIA "combobox with listbox popup") over the
- * temple list. Typing filters by name, regency or region, ignoring case and accents.
+ * Searchable temple picker: an editable combobox (WAI-ARIA "combobox with listbox popup") over every
+ * known temple. Typing filters by name, regency or region, ignoring case and accents. Temples not
+ * built yet are marked "coming soon"; picking one is the caller's call (the page shows it on the map).
  */
 
 const CHECK =
@@ -17,7 +18,7 @@ const fold = (text: string) =>
     .toLowerCase();
 
 /** Whether every word of `query` appears in the temple's name, regency or region. */
-export function matchesQuery(c: CandiEntry, query: string): boolean {
+export function matchesQuery(c: Temple, query: string): boolean {
   const haystack = fold(`${c.name} ${c.location} ${REGION_NAMES[c.region]}`);
   return fold(query)
     .split(/\s+/)
@@ -25,7 +26,7 @@ export function matchesQuery(c: CandiEntry, query: string): boolean {
     .every((word) => haystack.includes(word));
 }
 
-export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick: (c: CandiEntry) => void): void {
+export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick: (t: Temple) => void): void {
   const listId = "temple-search-list";
   root.classList.add("temple-search");
   root.innerHTML = `
@@ -38,7 +39,7 @@ export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick
   input.value = current.name;
   input.placeholder = "Search temples";
 
-  let options: { c: CandiEntry; el: HTMLElement }[] = [];
+  let options: { c: Temple; el: HTMLElement }[] = [];
   let active = -1;
 
   const setActive = (i: number) => {
@@ -51,7 +52,7 @@ export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick
   };
 
   const fill = (query: string) => {
-    const matches = CANDI.filter((c) => matchesQuery(c, query));
+    const matches = TEMPLES.filter((c) => matchesQuery(c, query));
     list.replaceChildren();
     options = [];
     if (matches.length === 0) {
@@ -71,11 +72,11 @@ export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick
       group.append(head);
       for (const c of matches.filter((m) => m.region === region)) {
         const el = document.createElement("div");
-        el.className = "select-item temple-search-item";
+        el.className = "load" in c ? "select-item temple-search-item" : "select-item temple-search-item planned";
         el.id = `${listId}-${c.id}`;
         el.setAttribute("role", "option");
         el.setAttribute("aria-selected", String(c.id === current.id));
-        el.innerHTML = `<span><span class="temple-search-name"></span><span class="temple-search-location"></span></span>${CHECK}`;
+        el.innerHTML = `<span><span class="temple-search-name"></span><span class="temple-search-location"></span></span>${"load" in c ? CHECK : '<span class="soon-badge">Coming soon</span>'}`;
         el.querySelector(".temple-search-name")!.textContent = c.name;
         el.querySelector(".temple-search-location")!.textContent = c.location;
         // Keep focus in the input so the pick doesn't blur-close the list first.
@@ -104,7 +105,7 @@ export function mountTempleSearch(root: HTMLElement, current: CandiEntry, onPick
     input.removeAttribute("aria-activedescendant");
     if (restore) input.value = current.name;
   };
-  const pick = (c: CandiEntry) => {
+  const pick = (c: Temple) => {
     close(false);
     input.value = c.name;
     if (c.id !== current.id) onPick(c);

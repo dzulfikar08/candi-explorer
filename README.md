@@ -27,7 +27,9 @@ bun run test
 
 ## What you can do
 
-- **Map of Indonesia** (the home page): every temple on the map. Nearby temples merge into one
+- **Map of Indonesia** (the home page): every temple on the map, plus 141 more known temples marked
+  "coming soon" (from Indonesian Wikipedia's _Daftar candi di Indonesia_ and Wikidata, positioned
+  from their articles or OpenStreetMap; the list is in `src/candi/planned.ts`). Nearby temples merge into one
   numbered marker that zooms in when clicked; drag, scroll or pinch to move around. The side list
   groups temples by region and filters as you type a name, regency or island. Pick a temple to see
   where it is, then "Explore in 3D". "All temples" in a temple brings you back to it on the map.

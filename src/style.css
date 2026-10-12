@@ -185,6 +185,10 @@ input {
   display: block;
 }
 
+.temple-search-item.planned .temple-search-name {
+  color: var(--ink-muted);
+}
+
 .temple-search-location {
   display: block;
   color: var(--ink-muted);
@@ -1069,6 +1073,41 @@ body[data-view="map"] > :not(#atlas, script) {
   font-size: 12px;
 }
 
+/* Temples not built yet: same row, a quieter name and a badge on the right. */
+.atlas-item.planned {
+  grid-template-columns: 1fr auto;
+  column-gap: 8px;
+}
+
+.atlas-item.planned .atlas-item-name {
+  font-weight: 400;
+}
+
+.atlas-item.planned .soon-badge {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.soon-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-muted);
+  font: 500 11px/1.5 var(--sans);
+  white-space: nowrap;
+}
+
+.atlas-filter {
+  width: fit-content;
+  margin-top: 10px;
+}
+
+.atlas-filter .atlas-count {
+  margin-left: 4px;
+}
+
 .atlas-foot {
   display: grid;
   gap: 8px;
@@ -1097,7 +1136,7 @@ body[data-view="map"] > :not(#atlas, script) {
   outline-offset: -3px;
 }
 
-.atlas-map svg {
+.atlas-map > svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1208,6 +1247,33 @@ body[data-view="map"] > :not(#atlas, script) {
   color: var(--paper-strong);
 }
 
+/* Coming soon: a hollow dot that reads as "known, not yet built"; groups of them a muted disc. */
+.atlas-marker.planned .atlas-dot {
+  border: 2px solid var(--accent);
+  background: var(--paper-strong);
+  color: var(--accent-ink);
+}
+
+.atlas-marker.planned:not(.cluster) .atlas-dot {
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+}
+
+.atlas-marker.planned .atlas-label {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.atlas-marker.planned.selected .atlas-dot {
+  background: var(--accent);
+}
+
+.atlas-marker.planned.selected .atlas-label,
+.atlas-marker.planned.hover .atlas-label {
+  color: var(--paper-strong);
+}
+
 .atlas-zoom {
   position: absolute;
   top: 16px;
@@ -1263,6 +1329,16 @@ body[data-view="map"] > :not(#atlas, script) {
   display: flex;
   gap: 8px;
   margin-top: 14px;
+}
+
+.atlas-card-soon {
+  margin: 12px 0 8px;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.atlas-card-soon .soon-badge {
+  margin-right: 4px;
 }
 
 @media (max-width: 760px) {

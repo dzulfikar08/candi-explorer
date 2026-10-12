@@ -1,28 +1,44 @@
-import type { CandiDefinition } from "./types";
+import { PLANNED } from "./planned";
+import type { CandiDefinition, Source } from "./types";
 
-export type Region = "central-java" | "east-java" | "west-java" | "sumatra" | "bali";
+/** Regions in the order the map list and the picker show them. */
+export const REGIONS = ["central-java", "east-java", "west-java", "sumatra", "bali", "kalimantan"] as const;
+export type Region = (typeof REGIONS)[number];
 
 export const REGION_NAMES: Record<Region, string> = {
   "central-java": "Central Java & Yogyakarta",
   "east-java": "East Java",
-  "west-java": "West Java",
-  sumatra: "Sumatra",
+  "west-java": "West Java & Banten",
+  sumatra: "Sumatra & Bangka",
   bali: "Bali",
+  kalimantan: "Kalimantan",
 };
 
-export interface CandiEntry {
+/** What the map and the search know about a temple, built or not. */
+interface TempleSite {
   id: string;
   name: string;
-  /** Same as the definition's; repeated here so the map can show every temple without loading them. */
+  /** "Regency, Province". */
   location: string;
   site: { lat: number; lon: number };
   region: Region;
-  /** Loaded on demand so each temple's code only ships when it is opened. */
+}
+
+export interface CandiEntry extends TempleSite {
+  /** Loaded on demand so each temple's code only ships when it is opened. Location and site repeat the definition's. */
   load(): Promise<CandiDefinition>;
 }
 
+/** A known temple not built in 3D yet: on the map and in the lists as "coming soon". */
+export interface PlannedTemple extends TempleSite {
+  /** Where the temple and its coordinates are recorded. */
+  sources: Source[];
+}
+
+export type Temple = CandiEntry | PlannedTemple;
+
 /**
- * Every temple, in the order the picker and the map list them: by region, neighbours together.
+ * The temples built in 3D, in the order previous / next walk them: by region, neighbours together.
  * `src/candi/index.test.ts` checks name, location and site against each definition.
  */
 export const CANDI: readonly CandiEntry[] = [
@@ -64,3 +80,6 @@ export const CANDI: readonly CandiEntry[] = [
   { id: "bahal", name: "Bahal I", location: "Padang Lawas Utara, Sumatera Utara", site: { lat: 1.40556, lon: 99.73056 }, region: "sumatra", load: () => import("./bahal").then((m) => m.bahal) },
   { id: "gunung-kawi", name: "Gunung Kawi", location: "Gianyar, Bali", site: { lat: -8.4234, lon: 115.3123 }, region: "bali", load: () => import("./gunung-kawi").then((m) => m.gunungKawi) },
 ];
+
+/** Every known temple, built ones first within each region; the map list and the picker show this. */
+export const TEMPLES: readonly Temple[] = REGIONS.flatMap((region) => [...CANDI, ...PLANNED].filter((t) => t.region === region));

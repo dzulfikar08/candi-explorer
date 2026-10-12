@@ -24,6 +24,7 @@ import { createStoneTextures } from "./render/stone";
 import { mountPromo } from "./promo";
 import { mountVisitors } from "./visitors";
 import { enhanceSelect } from "./ui/select";
+import { sourceItems } from "./ui/sources";
 import { mountTempleSearch } from "./ui/temple-search";
 
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -96,22 +97,7 @@ function start(candi: CandiDefinition): void {
   ui.location.textContent = candi.location;
   document.title = `Candi Explorer · ${candi.name}`;
   ui.backToMap.href = `/?from=${candi.id}`;
-  ui.sources.replaceChildren(
-    ...candi.sources.map((s) => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = s.url;
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.textContent = s.title;
-      a.insertAdjacentHTML(
-        "beforeend",
-        '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5h6.5V10M12.5 3.5L4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="visually-hidden"> (opens in a new tab)</span>',
-      );
-      li.append(a);
-      return li;
-    }),
-  );
+  ui.sources.replaceChildren(...sourceItems(candi.sources));
   ui.legend.replaceChildren(
     ...(["lower", "middle", "upper"] satisfies Realm[]).map((realm) => {
       const p = document.createElement("p");
@@ -403,8 +389,9 @@ if (index < 0) {
   const entry = CANDI[index];
   mountPromo(element("promo"));
   mountVisitors(element("visitors"));
-  mountTempleSearch(ui.picker, entry, (c) => location.assign(`/${c.id}`));
-  // Previous / next follow the picker order and wrap around.
+  // Temples not built yet open on the map, where their card says so.
+  mountTempleSearch(ui.picker, entry, (t) => location.assign("load" in t ? `/${t.id}` : `/?from=${t.id}`));
+  // Previous / next walk the built temples in list order and wrap around.
   for (const [link, step, word] of [
     [ui.prev, -1, "Previous"],
     [ui.next, 1, "Next"],
