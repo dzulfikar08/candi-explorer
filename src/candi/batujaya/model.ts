@@ -5,7 +5,7 @@ import { block, walls } from "../kit/shrine";
 import { type Part, Parts, Site } from "../kit/site";
 import { terrace } from "../kit/enclosure";
 import type { CandiModel } from "../types";
-import { BLANDONGAN, BLANDONGAN_HALF, BLANDONGAN_TOP } from "./layout";
+import { BLANDONGAN, BLANDONGAN_HALF, BLANDONGAN_RUN, BLANDONGAN_TOP, JIWA } from "./layout";
 import { buildTour } from "./tour";
 
 /**
@@ -21,15 +21,8 @@ import { buildTour } from "./tour";
  * are placed on the same axis here so the pair reads as it does on the site.
  */
 
-/** Candi Jiwa (Segaran I), the south-eastern temple. */
-export const JIWA = { x: 64, z: 77 };
-/** Candi Blandongan (Segaran V), the north-western temple. */
-export const BLANDONGAN = { x: -64, z: -77 };
-/** Blandongan platform: 25 × 25 m first level, standing 2.2 m before the central body rises. */
-export const BLANDONGAN_HALF = 12.5;
-export const BLANDONGAN_TOP = 2.2;
-/** stairRun(2.2): how far the flights project from the platform edge. */
-export const BLANDONGAN_RUN = stairRun(BLANDONGAN_TOP);
+/** Shared temple positions/dimensions live in layout.ts; re-exported for index/tour. */
+export { BLANDONGAN, BLANDONGAN_HALF, BLANDONGAN_RUN, BLANDONGAN_TOP, JIWA };
 
 /** Stair half-width at the platform edge (flights are 2.6 m wide). */
 const STAIR_HALF = 1.3;

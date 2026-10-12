@@ -195,8 +195,12 @@ function buildTrees(setting: Setting): InstancedMesh {
   return trees;
 }
 
-/** Concave stratovolcano or ridge hill silhouette, scaled to keep its true angular size. */
-function buildHorizon(features: HorizonFeature[], site: { lat: number; lon: number }): Mesh[] {
+/**
+ * Concave stratovolcano or ridge hill silhouette, scaled to keep its true angular size. Sites on a
+ * volcano's own slope (Cetho, Sukuh on Lawu) put a tall peak at the minimum scene distance; its
+ * base is then narrowed so the cone never reaches over the site and the camera.
+ */
+function buildHorizon(features: HorizonFeature[], site: { lat: number; lon: number }, setting: Setting): Mesh[] {
   const material = new MeshStandardMaterial({ color: "#4d5d48", roughness: 1, flatShading: true });
   return features.flatMap((f) => {
     const eastKm = (f.lon - site.lon) * 111.32 * Math.cos((site.lat * Math.PI) / 180);
@@ -205,6 +209,8 @@ function buildHorizon(features: HorizonFeature[], site: { lat: number; lon: numb
     const bearing = Math.atan2(eastKm, northKm);
     const sceneDist = MathUtils.clamp(distKm * 130, 1400, 4200);
     const height = (sceneDist * f.relativeHeight) / (distKm * 1000);
+    // Outline noise widens the base by up to 17.5%; keep that clear of the plaza and a viewing margin.
+    const maxRadius = (sceneDist - setting.plazaRadius - 400) / 1.175;
     const peak = (h: number, radius: number, seed: number) => {
       const profile = Array.from({ length: 18 }, (_, i) => {
         const t = i / 17;
@@ -224,7 +230,7 @@ function buildHorizon(features: HorizonFeature[], site: { lat: number; lon: numb
     };
     const centre = new Vector3(Math.sin(bearing) * sceneDist, -15, -Math.cos(bearing) * sceneDist);
     if (f.kind === "volcano") {
-      const mesh = new Mesh(peak(height, height * 3.4, distKm), material);
+      const mesh = new Mesh(peak(height, Math.min(height * 3.4, maxRadius), distKm), material);
       mesh.position.copy(centre);
       mesh.name = f.name;
       return [mesh];
@@ -233,7 +239,7 @@ function buildHorizon(features: HorizonFeature[], site: { lat: number; lon: numb
     const across = new Vector3(Math.cos(bearing), 0, Math.sin(bearing));
     return Array.from({ length: 11 }, (_, i) => {
       const h = height * (0.55 + hash(i, 7) * 0.45);
-      const mesh = new Mesh(peak(h, h * 4.5, i * 3.1), material);
+      const mesh = new Mesh(peak(h, Math.min(h * 4.5, maxRadius), i * 3.1), material);
       mesh.position.copy(centre).addScaledVector(across, (i - 5) * sceneDist * 0.16);
       mesh.name = f.name;
       return mesh;
@@ -280,7 +286,7 @@ export function createEnvironment(scene: Scene, renderer: WebGLRenderer, candi: 
   scene.fog = fog;
 
   const ground = buildTerrain(candi.setting);
-  scene.add(ground, buildApproach(candi.setting), buildTrees(candi.setting), ...buildHorizon(candi.horizon, candi.site));
+  scene.add(ground, buildApproach(candi.setting), buildTrees(candi.setting), ...buildHorizon(candi.horizon, candi.site, candi.setting));
 
   const dawn = new Color("#d9a27c");
   const day = new Color("#b4c6d4");

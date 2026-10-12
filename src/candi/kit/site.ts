@@ -112,7 +112,7 @@ export class Site extends Parts {
       setRealmHighlight(on) {
         for (const realm of REALMS) {
           for (const [key, m] of Object.entries(materials[realm])) {
-            if (key === "nicheShadow") continue;
+            if (key === "nicheShadow" || key === "water") continue;
             m.color.set(on ? REALM_TINT[realm] : base.get(m)!);
           }
         }

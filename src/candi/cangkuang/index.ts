@@ -40,7 +40,7 @@ const CANGKUANG: ShrineSpec = {
 
 /** The temple island is drawn as a moulded terrace; the 16.5 ha island itself is far larger. */
 const ISLAND = { halfX: 8, halfZ: 6, height: 1.4 };
-/** Situ Cangkuang: a dark flat sheet (nicheShadow material) with a hole for the island. */
+/** Situ Cangkuang: a flat water sheet with a hole for the island. */
 const LAKE = { halfX: 40, halfZ: 30 };
 
 const topics: Record<string, Topic> = {
@@ -107,7 +107,7 @@ export const cangkuang: CandiDefinition = {
     middle: "Bhuvarloka · body",
     upper: "Svarloka · roof",
   },
-  setting: { plazaRadius: 46, shadowExtent: 42, approach: { x: 1, z: 0, start: 34 } },
+  setting: { plazaRadius: 46, shadowExtent: 42, approach: { x: 1, z: 0, start: 41 } },
   build: (textures: StoneTextures) =>
     buildCompound(
       {
@@ -120,9 +120,9 @@ export const cangkuang: CandiDefinition = {
           { spec: CANGKUANG, at: { x: 0, z: 0 }, y: ISLAND.height, facing: "east", tour: { topic: "overview", label: "Island platform and chamber" } },
         ],
         extra(site: Site): void {
-          // Situ Cangkuang: a flat dark sheet at just above ground level — no banks or waves are
+          // Situ Cangkuang: a flat water sheet just above ground level — no banks or waves are
           // modelled, only the water's extent around the island terrace.
-          site.get("lower", "nicheShadow").cap(rectOutline(LAKE.halfX, LAKE.halfZ), 0.04, [rectOutline(ISLAND.halfX + 1.2, ISLAND.halfZ + 1.2)]);
+          site.get("lower", "water").cap(rectOutline(LAKE.halfX, LAKE.halfZ), 0.04, [rectOutline(ISLAND.halfX + 1.2, ISLAND.halfZ + 1.2)]);
         },
         // Visitors cross the lake by raft from the east and step up onto the island.
         approach: { from: { x: 34, z: 0 }, via: [{ x: 12, z: 0, y: ISLAND.height }], topic: "island", label: "Crossing Situ Cangkuang from the east" },

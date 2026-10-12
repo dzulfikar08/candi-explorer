@@ -106,7 +106,7 @@ export const plaosan: CandiDefinition = {
     { name: "Gunungkidul hills", lat: -7.9, lon: 110.52, relativeHeight: 450, kind: "ridge" },
     { name: "Bukit Ijo", lat: -7.8926, lon: 110.5024, relativeHeight: 210, kind: "ridge" },
   ],
-  orbit: { position: [-150, 90, 200], target: [0, 8, 0] },
+  orbit: { position: [-105, 70, 135], target: [0, 7, 48] },
   realms: {
     lower: "Kamadhatu · foot",
     middle: "Rupadhatu · body",

@@ -42,11 +42,17 @@ tour, and a narrow mobile viewport if you touched the UI.
 
 ## Adding a new candi
 
-1. Create `src/candi/<name>/` and implement `CandiDefinition` from `src/candi/types.ts`.
-2. Keep plan geometry (measurements, counts) separate from mesh building, like
-   `borobudur/layout.ts` vs `borobudur/model.ts`, and test the layout.
-3. Provide hotspots, a tour, and a walk spawn point.
-4. Open an issue with the "New candi" template before starting, so work isn't duplicated.
+1. Open an issue with the "New candi" template before starting, so work isn't duplicated.
+2. Create `src/candi/<id>/index.ts` exporting a `CandiDefinition` (`src/candi/types.ts`) and add one
+   line for it to `src/candi/index.ts`. Start from `src/candi/mendut/index.ts`.
+3. Build it with the shared kit in `src/candi/kit/` where you can: a `ShrineSpec` per temple form
+   and `buildCompound` for the site. Write custom geometry only for what the kit can't express
+   (Borobudur, gates, bathing places), inside the temple's own folder. If the kit needs a new
+   feature, add it there as a separate change.
+4. Put sources in the file header and keep every dimension, count and date traceable to them. Say
+   in the notes where the model departs from the real temple.
+5. Provide hotspots, topics and a tour; check that each hotspot view frames its subject.
+6. When a temple has published counts or heights, test them (see `prambanan/layout.test.ts`).
 
 ## Commit messages
 

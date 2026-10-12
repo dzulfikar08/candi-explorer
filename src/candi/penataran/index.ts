@@ -19,7 +19,9 @@ import type { CandiDefinition, Topic } from "../types";
  * - Wikimedia Commons, KITLV collections (19th-century depictions of the site).
  *
  * The real axis runs WNW–ESE; the model snaps it to west–east (about 22°). All masonry is drawn
- * in andesite; the brick gate and foundations are rendered in the same fabric.
+ * in andesite; the brick gate and foundations are rendered in the same fabric. The main temple's
+ * collapsed upper shrine is drawn rebuilt on the ground south-east of its stepped base, leaving
+ * the third terrace's top empty; the ritual pool holds the kit's still-water surface.
  */
 const topics: Record<string, Topic> = {
   overview: {
@@ -101,7 +103,7 @@ const topics: Record<string, Topic> = {
     kicker: "The top of the main temple",
     title: "A shrine without a stone roof",
     paragraphs: [
-      "The three terraces rise 7.19 m in all, and on the top platform stands a small roofless shrine. Curiously, no stones that could have formed a stone roof were found anywhere in the complex, so scholars reconstruct a wooden frame roofed with palm fibre or thatch in receding tiers, like the meru roofs of Balinese temples.",
+      "The three terraces rise 7.19 m in all. The temple's upper shrine — a small walk-in cella — collapsed long ago; it is shown here as rebuilt on the ground beside the stepped base, with the top of the third terrace left empty. No stones that could have formed a stone roof were found anywhere in the complex, so scholars reconstruct a wooden frame roofed with palm fibre or thatch in receding tiers, like the meru roofs of Balinese temples.",
       "R. Soekmono concluded that the central chamber was empty: no divine image stood in it. Penataran therefore records the passage from the stone-roofed temples of Central Java to the organic-roofed sanctuaries still in use in Bali. A comparable temple, Pura Yeh Gangga in Bali, was built in 1334 with the same kind of substructure.",
       "Behind the temple, near the river that flows down from Kelud, lies a ritual bathing pool dated 1337 Saka — 1415 CE, the youngest date in the complex. A century's pilgrimages later, the Sundanese chronicle of Bujangga Manik still names Rabut Palah as a place of learning, though he complains the pilgrims had grown worldly.",
     ],
@@ -126,7 +128,7 @@ export const penataran: CandiDefinition = {
     { topic: "dated", label: "The Dated Temple", anchor: [-21, 5.5, 16], view: { position: [-37, 6.5, 28], target: [-20.5, 4, 16] } },
     { topic: "naga", label: "The Naga Temple", anchor: [2, 4.2, 3], view: { position: [-14, 8, 15], target: [2, 3.5, 3] } },
     { topic: "reliefs", label: "Ramayana reliefs", anchor: [30.5, 4.8, 0], view: { position: [12, 8, 15], target: [30, 4.2, 0] } },
-    { topic: "summit", label: "The top shrine", anchor: [48, 11.2, 0], view: { position: [17, 17, 28], target: [48, 9.5, 0] } },
+    { topic: "summit", label: "The reconstructed shrine", anchor: [69, 4, 6], view: { position: [50, 9, 18], target: [66, 3.5, 6] } },
   ],
   horizon: [
     { name: "Kelud", lat: -7.93, lon: 112.3094, relativeHeight: 1281, kind: "volcano" },
@@ -134,7 +136,7 @@ export const penataran: CandiDefinition = {
     { name: "Arjuno-Welirang", lat: -7.717, lon: 112.575, relativeHeight: 2949, kind: "volcano" },
     { name: "Semeru", lat: -8.108, lon: 112.925, relativeHeight: 3226, kind: "volcano" },
   ],
-  orbit: { position: [-110, 48, 95], target: [0, 7, 0] },
+  orbit: { position: [20, 22, 30], target: [48, 2.5, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

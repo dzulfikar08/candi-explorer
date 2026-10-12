@@ -109,7 +109,7 @@ export const cetho: CandiDefinition = {
     { name: "Sumbing", lat: -7.384, lon: 110.07, relativeHeight: 1870, kind: "volcano" },
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 1640, kind: "volcano" },
   ],
-  orbit: { position: [-150, 62, 110], target: [0, 10, 0] },
+  orbit: { position: [-140, 100, 100], target: [0, 10, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

@@ -139,7 +139,7 @@ const topics: Record<string, Topic> = {
 
 export const tikus: CandiDefinition = {
   id: "tikus",
-  name: "Candi Tikus",
+  name: "Tikus",
   location: "Mojokerto, Jawa Timur",
   site: { lat: -7.3424, lon: 112.3807 },
   overviewTopic: "overview",
@@ -154,7 +154,7 @@ export const tikus: CandiDefinition = {
     { name: "Arjuno", lat: -7.705, lon: 112.476, relativeHeight: 3310, kind: "volcano" },
     { name: "Welirang", lat: -7.725, lon: 112.58, relativeHeight: 3120, kind: "volcano" },
   ],
-  orbit: { position: [-38, 22, 30], target: [0, -2.5, 0] },
+  orbit: { position: [-30, 14, 22], target: [0, -2.5, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",
@@ -164,7 +164,7 @@ export const tikus: CandiDefinition = {
   build: (textures: StoneTextures) =>
     buildCompound(
       {
-        name: "Candi Tikus",
+        name: "Tikus",
         fabric: "brick",
         shrines: [],
         extra(site) {

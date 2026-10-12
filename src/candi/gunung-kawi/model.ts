@@ -10,7 +10,7 @@ import { buildTour } from "./tour";
 
 /**
  * Gunung Kawi is carved, not built: the two gorge walls are treated as masses of rock with tall
- * corbel-arched niches recessed 1.25 m into them, and each shrine is a shallow facade standing in
+ * corbel-arched niches recessed ~1 m into them, and each shrine is a shallow facade standing in
  * the back of its niche. The valley floor stays at ground level y = 0 — the real ~300-step descent
  * from the plateau is not modelled. The Pakerisan runs south at x ≈ -3.5; the east-bank five face
  * west, the west-bank four face east, as on the site.
@@ -18,7 +18,8 @@ import { buildTour } from "./tour";
 
 /** Carved face plane of each cliff, ±x; rock continues 23 m further out. */
 const FACE = 11;
-const NICHE_D = 1.25;
+/** Niches recessed 0.9 m — shallower than the real ~1.25 m so sky light reaches the facades. */
+const NICHE_D = 0.9;
 const CELL_D = 2.4;
 const BACK = 23;
 /** Flat carved band tops: shrine niches close at 9.5, cave cells at 3.4. */
@@ -113,8 +114,10 @@ function facade(parts: Parts, big: boolean): void {
 /** One gorge wall. dir = 1 for the east bank (faces west), -1 for the west bank. */
 function buildCliff(site: Site, dir: 1 | -1): void {
   const masonry = site.get("middle", "masonry");
-  // Local x offsets a..b from the carved face into the rock, converted to world min/max.
-  const x = (a: number, b: number): [number, number] => (dir > 0 ? [FACE + a, FACE + b] : [FACE - b, FACE - a]);
+  // Local x offsets a..b from the carved face into the rock, converted to world min/max. The west
+  // bank mirrors about -FACE: [-(FACE+b), -(FACE+a)] — the old [FACE-b, FACE-a] collapsed the bank
+  // to a ~1 m slab whose crest boxes stretched across the gorge in front of the east facades.
+  const x = (a: number, b: number): [number, number] => (dir > 0 ? [FACE + a, FACE + b] : [-FACE - b, -FACE - a]);
 
   const plainSlabs = (z0: number, z1: number, seed: number): void => {
     let z = z0;
@@ -171,9 +174,13 @@ function buildCliff(site: Site, dir: 1 | -1): void {
       masonry.box([xa, ARCH.l2, n.z0 - 0.3], [xb, BAND_TOP, n.z1 + 0.3]);
       const fp = new Parts();
       facade(fp, n.big);
+      // The east cliff sits in morning shadow: render the carved facades in the lighter statue
+      // stone so they read against the dark rock around them (the real candi are lighter carved
+      // faces in a dark cliff, not built masonry).
+      const parts = fp.build().map((p) => (p.key === "masonry" ? { ...p, key: "statue" as const } : p));
       const facing = dir > 0 ? "west" : "east";
-      const fx = dir > 0 ? FACE + NICHE_D - 0.02 : FACE - NICHE_D + 0.02;
-      site.place(fp.build(), placement(fx, 0.06, (n.z0 + n.z1) / 2, facing));
+      const fx = dir > 0 ? FACE + NICHE_D - 0.02 : -(FACE + NICHE_D) + 0.02;
+      site.place(parts, placement(fx, 0.06, (n.z0 + n.z1) / 2, facing));
       // Water spout below the niche (every real candi has one; the central is a naga).
       const c = (n.z0 + n.z1) / 2;
       const hw = n.big ? 0.2 : 0.11;
@@ -202,7 +209,7 @@ function buildCliff(site: Site, dir: 1 | -1): void {
       const [ta, tb] = x(0, 0.3);
       masonry.box([ta, 0, cell.z0], [tb, 0.18, cell.z1]);
       // Dark plane deep in the cell so the doorway reads as a room, not a dent.
-      const bx = dir > 0 ? FACE + CELL_D - 0.02 : FACE - CELL_D + 0.02;
+      const bx = dir > 0 ? FACE + CELL_D - 0.02 : -(FACE + CELL_D) + 0.02;
       site.get("middle", "nicheShadow").quad([bx, 0.1, cell.z0 + 0.05], [bx, 0.1, cell.z1 - 0.05], [bx, 1.9, cell.z1 - 0.05], [bx, 1.9, cell.z0 + 0.05], [-dir, 0, 0]);
     }
     crestSlabs(CELL_BAND, CELL_TOP, 240);

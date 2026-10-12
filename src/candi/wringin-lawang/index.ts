@@ -100,7 +100,7 @@ export const wringinLawang: CandiDefinition = {
     { name: "Bromo", lat: -7.9425, lon: 112.95, relativeHeight: 2284, kind: "volcano" },
     { name: "Semeru", lat: -8.1086, lon: 112.922, relativeHeight: 3631, kind: "volcano" },
   ],
-  orbit: { position: [34, 16, 40], target: [0, 7.5, 0] },
+  orbit: { position: [-18, 15, 15], target: [0, 7.5, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

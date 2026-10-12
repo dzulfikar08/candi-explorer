@@ -132,7 +132,7 @@ export function buildRatuBoko(textures: StoneTextures): CandiModel {
     }),
     placement(GATE_TERRACE.cx, 0, 0),
   );
-  site.place(terrace({ halfX: PLATEAU.halfX, halfZ: PLATEAU.halfZ, height: PLATEAU.top, stairs: [] }), placement(PLATEAU.cx, 0, 0));
+  site.place(terrace({ halfX: PLATEAU.halfX, halfZ: PLATEAU.halfZ, height: PLATEAU.top, stairs: [], stairWidth: 4.4 }), placement(PLATEAU.cx, 0, 0));
 
   // Stone paving between the two gate rows, then the rows themselves: three roofless gateways,
   // and 15 m east the five-arched main row at the plateau edge.
@@ -244,6 +244,10 @@ export function buildRatuBoko(textures: StoneTextures): CandiModel {
     SQUARE_POOLS.map((b) => rectOutline(b.hx, b.hz, b.x, b.z)),
   );
   for (const b of SQUARE_POOLS) basin(site, b.x, b.z, b.hx, b.hz, PLATEAU.top + 0.06);
+  // Water fills the basins: the keputren pools held stored spring water (Kemdikbud). Rendered
+  // with the "water" material so the realm overlay does not tint it.
+  const water = site.get("lower", "water");
+  for (const b of SQUARE_POOLS) water.cap(rectOutline(b.hx - 0.06, b.hz - 0.06, b.x, b.z), PLATEAU.top - 0.28);
   const eastCourt = { x: KEPUTREN.cx + 6.25, halfX: 5.8, halfZ: 11.55 };
   floor.cap(
     rectOutline(eastCourt.halfX, eastCourt.halfZ, eastCourt.x, KEPUTREN.cz),
@@ -256,6 +260,7 @@ export function buildRatuBoko(textures: StoneTextures): CandiModel {
     ROUND_POOLS.map((r) => placement(r.x, PLATEAU.top - POOL_DEPTH + 0.2, r.z)),
     false,
   );
+  for (const r of ROUND_POOLS) water.cap(circleLoop(0.86, r.x, r.z), PLATEAU.top - 0.28);
 
   // Three miniature shrines on their terrace outside the pendopo's south-east corner, and a
   // square stone basin before them.

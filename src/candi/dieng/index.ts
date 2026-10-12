@@ -211,7 +211,7 @@ const topics: Record<string, Topic> = {
 
 export const dieng: CandiDefinition = {
   id: "dieng",
-  name: "Dieng · Arjuna complex",
+  name: "Dieng",
   location: "Banjarnegara, Jawa Tengah",
   site: { lat: -7.2052, lon: 109.9069 },
   overviewTopic: "overview",

@@ -99,7 +99,8 @@ export const bahal: CandiDefinition = {
     { name: "Sibualbuali", lat: 1.556, lon: 99.255, relativeHeight: 1750, kind: "volcano" },
     { name: "Sorikmarapi", lat: 0.684, lon: 99.543, relativeHeight: 2080, kind: "volcano" },
   ],
-  orbit: { position: [46, 24, 40], target: [0, 3.5, 0] },
+  // Home view from the gate/stair side, offset ~35° south, low enough to read stair and temple.
+  orbit: { position: [33, 22, 24], target: [0, 5, 0] },
   realms: {
     lower: "Kamadhatu · enclosure and foot",
     middle: "Rupadhatu · body",

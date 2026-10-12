@@ -156,7 +156,7 @@ export const muaraTakus: CandiDefinition = {
     { name: "Bukit Gantinggadang", lat: 0.1379, lon: 100.6913, relativeHeight: 206, kind: "ridge" },
     { name: "Gunung Targampo", lat: 0.0156, lon: 100.5868, relativeHeight: 1005, kind: "ridge" },
   ],
-  orbit: { position: [58, 36, 68], target: [0, 8, 0] },
+  orbit: { position: [36, 38, 42], target: [0, 8, 0] },
   realms: {
     lower: "Kamadhatu · foot, plinths and enclosure wall",
     middle: "Rupadhatu · body, the tower shafts",

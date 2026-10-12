@@ -124,7 +124,7 @@ export const sukuh: CandiDefinition = {
     { name: "Sumbing", lat: -7.384, lon: 110.07, relativeHeight: 2460, kind: "volcano" },
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 2226, kind: "volcano" },
   ],
-  orbit: { position: [-80, 40, 62], target: [8, 7, 0] },
+  orbit: { position: [-45, 30, 46], target: [10, 4, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

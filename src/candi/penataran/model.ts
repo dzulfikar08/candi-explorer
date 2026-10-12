@@ -53,7 +53,7 @@ export const NAGA: ShrineSpec = {
   crown: { kind: "none", height: 0 },
 };
 
-/** The small shrine on the main temple's third terrace: a roofless cella on a low foot. */
+/** The main temple's upper shrine, reconstructed on the ground beside its stepped base. */
 export const CELLA: ShrineSpec = {
   foot: { half: 2.6, height: 0.5 },
   body: { half: 2.05, height: 2.7, wall: 0.6 },
@@ -227,11 +227,13 @@ export function buildPenataran(textures: StoneTextures): CandiModel {
   footings.box([-18, 1.2, 15.5], [-14, 1.7, 19.5], {});
 
   // Third courtyard: the main temple, three relief terraces 7.19 m high in total (2.4 + 2.4 +
-  // 2.39), each climbed from the west, with the small cella standing on the top platform.
+  // 2.39), each climbed from the west. The main temple's upper shrine — a walk-in cella — was
+  // found collapsed and is shown rebuilt on the ground south-east of the base; the top of the
+  // third terrace is left empty (its lost superstructure was probably wood and thatch).
   site.place(terrace({ halfX: 17, halfZ: 13, height: 2.4, y: 2.6, stairs: ["west"], stairWidth: 3, relief: true }), placement(48, 0, 0));
   site.place(terrace({ halfX: 13, halfZ: 10, height: 2.4, y: 5.0, stairs: ["west"], stairWidth: 2.6, relief: true }), placement(48, 0, 0));
   site.place(terrace({ halfX: 9.5, halfZ: 8.5, height: 2.39, y: 7.4, stairs: ["west"], stairWidth: 2.2, relief: true }), placement(48, 0, 0));
-  site.place(shrine(CELLA).parts, placement(48, 9.79, 0, "west"));
+  site.place(shrine(CELLA).parts, placement(69, 2.6, 6, "west"));
 
   // Rear court, south-west: the collapsed small shrine, and the Palah inscription lingga.
   const side = ruin(SIDE, 5);
@@ -254,7 +256,8 @@ export function buildPenataran(textures: StoneTextures): CandiModel {
   pool.box([61, 2.6, 14.4], [71, 3.6, 15], {});
   pool.box([61, 2.6, 9], [61.6, 3.6, 15], {});
   pool.box([70.4, 2.6, 9], [71, 3.6, 15], {});
-  site.get("lower", "floor").box([61.6, 2.6, 9.6], [70.4, 2.7, 14.4], {});
+  // The pool holds water: the bottom is the kit's still-water surface (not tinted by realm overlays).
+  site.get("lower", "water").box([61.6, 2.6, 9.6], [70.4, 2.7, 14.4], {});
 
   const tour = buildTour();
   return {

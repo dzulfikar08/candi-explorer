@@ -85,7 +85,7 @@ export const brahu: CandiDefinition = {
     { name: "Welirang", lat: -7.691, lon: 112.477, relativeHeight: 3126, kind: "volcano" },
     { name: "Arjuno", lat: -7.725, lon: 112.576, relativeHeight: 3309, kind: "volcano" },
   ],
-  orbit: { position: [-44, 20, 27], target: [0, 9, 0] },
+  orbit: { position: [-26, 18, 17], target: [0, 9, 0] },
   realms: {
     lower: "Kamadhatu · foot",
     middle: "Rupadhatu · body",

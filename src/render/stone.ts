@@ -363,7 +363,8 @@ export type StoneMaterialKey =
   | "statue"
   | "latticeDiamond"
   | "latticeSquare"
-  | "nicheShadow";
+  | "nicheShadow"
+  | "water";
 
 export type StoneMaterials = Record<StoneMaterialKey, MeshStandardMaterial>;
 
@@ -405,5 +406,7 @@ export function createStoneMaterials(t: StoneTextures, fabric: Fabric = "andesit
     latticeDiamond: latticeMaterial(t.latticeDiamond),
     latticeSquare: latticeMaterial(t.latticeSquare),
     nicheShadow: new MeshStandardMaterial({ color: "#1c1a17", roughness: 1 }),
+    // Still lake or pool water: dark green-grey with a soft sheen of sky.
+    water: new MeshStandardMaterial({ color: "#3d5552", roughness: 0.12, metalness: 0.1 }),
   };
 }

@@ -1,7 +1,7 @@
 import { eye, loop, path } from "../kit/tour";
 import { stairRun } from "../kit/shrine";
 import type { TourSection } from "../types";
-import { GATE_TERRACE, INNER_GATE, KECIL_TERRACE, PASEBAN, PEMBAKARAN, PENDOPO, PLATEAU } from "./layout";
+import { GATE_TERRACE, INNER_GATE, KEPUTREN, KECIL_TERRACE, PASEBAN, PEMBAKARAN, PENDOPO, PLATEAU } from "./layout";
 
 /**
  * The pilgrim's walk, west to east: up the two talud flights to the outer gate row, through it

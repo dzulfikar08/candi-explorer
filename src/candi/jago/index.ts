@@ -138,7 +138,7 @@ export const jago: CandiDefinition = {
     { name: "Kawi", lat: -7.9229, lon: 112.4522, relativeHeight: 2038, kind: "volcano" },
     { name: "Kelud", lat: -7.93, lon: 112.308, relativeHeight: 1118, kind: "volcano" },
   ],
-  orbit: { position: [-44, 24, 38], target: [0, 6, 0] },
+  orbit: { position: [-27, 26, 25], target: [0, 6, 0] },
   realms: {
     lower: "Kamadhatu · relief terraces",
     middle: "Rupadhatu · body",

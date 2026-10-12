@@ -79,7 +79,7 @@ export const singosari: CandiDefinition = {
     { name: "Gunung Bromo", lat: -7.9425, lon: 112.953, relativeHeight: 1817, kind: "volcano" },
     { name: "Gunung Semeru", lat: -8.1087, lon: 112.923, relativeHeight: 3164, kind: "volcano" },
   ],
-  orbit: { position: [-42, 22, 36], target: [0, 7, 0] },
+  orbit: { position: [-24, 26, 22], target: [0, 7, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

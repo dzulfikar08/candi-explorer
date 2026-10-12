@@ -3,8 +3,10 @@
 [![CI](https://github.com/dzulfikar08/candi-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/dzulfikar08/candi-explorer/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Interactive 3D explorer for Indonesian temples (candi), built with Three.js + Vite. Starts with
-**Candi Borobudur**.
+Interactive 3D explorer for Indonesian temples (candi), built with Three.js + Vite: 32 sites from
+Central, East and West Java, Sumatra and Bali, from Borobudur and Prambanan to the brick gates of
+Majapahit's Trowulan and the cliff shrines of Gunung Kawi. Pick a temple from the menu under the
+title; each has its own address (`/prambanan`, `/sewu`, …).
 
 **Live: https://candi-explorer.by.dzulfikar.com**
 
@@ -25,39 +27,50 @@ bun run test
 
 ## What you can do
 
-- **Orbit**: drag to rotate, scroll to zoom. Numbered markers fly the camera to a feature and open
-  its notes (hidden foot, Buddha niches, east stairway, first gallery, circular terraces, perforated
-  stupa, main stupa, Merapi & Merbabu).
+- **Orbit**: drag to rotate, scroll to zoom. The view slowly circles the temple until you take
+  control. Numbered markers fly the camera to a feature and open its notes.
 - **Walk**: first-person, `W A S D` / arrows, `Shift` to hurry, click to capture the mouse, `Esc` to
   release. Stairs are climbable and walls block you. Needs a mouse and keyboard.
-- **Pradaksina tour**: walks the pilgrim route: enter from the east, circle every level clockwise,
-  climb the east stairway, finish at the main stupa. Notes follow the section; pause, skip, 1–8× speed.
-- **Three realms**: tints Kamadhatu / Rupadhatu / Arupadhatu.
-- **Time of day** (WIB): real solar position for Borobudur's latitude/longitude and today's date,
-  with morning mist over the Kedu Plain.
+- **Pradaksina tour**: walks the pilgrim route, circling each shrine clockwise with the temple on the
+  right. Notes follow the section; pause, skip, 1–8× speed.
+- **Three realms**: tints the three cosmological zones, foot / body / roof (Kamadhatu / Rupadhatu /
+  Arupadhatu on Buddhist temples, Bhurloka / Bhuvarloka / Svarloka on Hindu ones).
+- **Time of day** (WIB): real solar position for the temple's latitude/longitude and today's date,
+  with morning mist.
 
-## How the model is made
+## How the models are made
 
-Everything is procedural; there are no model or texture assets.
+Everything is procedural; there are no model or texture assets. Each temple's code loads only when
+it is opened.
 
-- `src/candi/borobudur/layout.ts`: plan geometry in metres: redented square terraces, stair
-  notches, niche and stupa placement, stair flights. Counts follow published figures (432 niched
-  Buddhas as 104/104/88/72/64, 72 perforated stupas as 32/24/16); `layout.test.ts` checks them.
-- `model.ts` builds merged meshes per realm and material, plus instanced niches, statues and stupas.
-  `sculpture.ts` has the Buddha (hands per mudra by facing direction), niche, stupa and main stupa.
-- `src/render/stone.ts` paints andesite masonry, paving, relief panels and stupa lattice alpha maps
+- `src/candi/kit/`: the shared kit. `shrine.ts` turns a `ShrineSpec` (plinths, foot, body with a
+  chamber and doorways, niches, stairs, stepped roof tiers with ratna or stupa finials) into
+  geometry; `compound.ts` places shrines, walls, courts and terraces from data and generates the
+  tour; `enclosure.ts` has courtyard walls with paduraksa and candi bentar gates, terraces and
+  sunken courts; `ruin.ts` collapses a shrine into rubble on its standing foot; `site.ts` merges
+  everything into one mesh per realm and material and instances repeated shrines.
+- `src/candi/<temple>/`: each temple's dimensions, layout, notes, hotspots and horizon, with its
+  sources in the file header. `*.test.ts` files check published counts and heights (Borobudur's
+  432 niched Buddhas and 72 perforated stupas, Prambanan's 224 perwara, Sewu's 249 temples).
+- `src/candi/borobudur/` is fully custom: redented terraces, galleries, mudras by direction,
+  perforated stupas with lattice alpha maps.
+- `src/render/stone.ts` paints andesite masonry, paving, red brick, relief panels and stupa lattices
   on canvases at startup.
-- `src/render/environment.ts`: sky, sun, mist, terrain, trees, and horizon volcanoes placed at their
-  true bearings with their true angular height.
+- `src/render/environment.ts`: sky, sun, mist, terrain (with a cut-out for sunken sites such as
+  Sambisari), trees, the approach road, and horizon volcanoes placed at their true bearings with
+  their true angular height.
 
-Known simplifications: the upper corridors are 3 m apart instead of the real ~2 m so they can be
-walked, carving is stylised, and the stairs are steep approximations.
+Known simplifications: carving is stylised and shared between temples; many shrines reuse the
+kit's generic Javanese profile; Borobudur's upper corridors are 3 m apart instead of the real ~2 m
+so they can be walked; stairs are steep approximations. Each temple's notes and source header say
+where its model departs from the real building.
 
 ## Adding another candi
 
-Implement a `CandiDefinition` (`src/candi/types.ts`): topics, hotspots, horizon landmarks, a home
-camera view, and a `build(textures)` that returns the model, collidable meshes, tour sections and a
-walk spawn point. Then pass it to `start()` in `src/main.ts`. See [CONTRIBUTING.md](CONTRIBUTING.md)
+Create `src/candi/<id>/index.ts` exporting a `CandiDefinition` (`src/candi/types.ts`): topics,
+hotspots, horizon landmarks, a home camera view, realm labels, a site setting, and a
+`build(textures)` — usually `buildCompound(...)` from the kit. Register it in `src/candi/index.ts`.
+`src/candi/mendut/index.ts` is the smallest complete example. See [CONTRIBUTING.md](CONTRIBUTING.md)
 for the full checklist.
 
 ## Deploying

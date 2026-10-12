@@ -141,7 +141,7 @@ export const badut: CandiDefinition = {
     { name: "Kelud", lat: -7.928, lon: 112.308, relativeHeight: 1250, kind: "volcano" },
     { name: "Semeru", lat: -8.1088, lon: 112.9228, relativeHeight: 3200, kind: "volcano" },
   ],
-  orbit: { position: [-30, 12, 20], target: [-1, 3.5, 0] },
+  orbit: { position: [-29, 24, 20], target: [-1, 3.5, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

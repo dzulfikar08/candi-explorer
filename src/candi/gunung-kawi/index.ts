@@ -116,18 +116,19 @@ export const gunungKawi: CandiDefinition = {
   overviewTopic: "overview",
   topics,
   hotspots: [
-    { topic: "east", label: "Five eastern shrines", anchor: [11.5, 4, -15.2], view: { position: [2, 4.5, -15.2], target: [11.8, 4.5, -15.2] } },
-    { topic: "memorials", label: "False door and kala", anchor: [11.9, 3.2, -15.2], view: { position: [9.3, 3, -15.2], target: [12.2, 3.1, -15.2] } },
-    { topic: "west", label: "Four western shrines", anchor: [-11.5, 3.6, -14.3], view: { position: [-1.5, 4, -14.3], target: [-11.8, 4, -14.3] } },
-    { topic: "hermits", label: "Hermitage caves", anchor: [-11.6, 1.7, 8.4], view: { position: [-3, 2.4, 8.4], target: [-12.8, 1.8, 8.4] } },
-    { topic: "water", label: "Pakerisan gorge", anchor: [-3.5, 0.5, 6], view: { position: [3.5, 6.5, -14], target: [-3.5, 0.8, 4] } },
+    { topic: "east", label: "Five eastern shrines", anchor: [11, 4, -15.2], view: { position: [3, 4.5, -14.5], target: [11.4, 4.5, -15.2] } },
+    { topic: "memorials", label: "False door and kala", anchor: [11.3, 3.2, -15.2], view: { position: [8.8, 3, -15.2], target: [11.6, 3.1, -15.2] } },
+    { topic: "west", label: "Four western shrines", anchor: [-11, 3.6, -14.3], view: { position: [-2, 4, -14.3], target: [-11.4, 4, -14.3] } },
+    { topic: "hermits", label: "Hermitage caves", anchor: [-10.9, 1.7, 8.4], view: { position: [-3.5, 2.4, 8.4], target: [-12, 1.8, 8.4] } },
+    { topic: "water", label: "Pakerisan gorge", anchor: [-3.5, 0.9, 6], view: { position: [2.5, 5.5, -12], target: [-3.5, 1, 3] } },
   ],
   // Gorge floor taken as ≈150 m elevation; Batur 1717 m and Agung 3031 m give the angular heights.
   horizon: [
     { name: "Batur", lat: -8.2422, lon: 115.3752, relativeHeight: 1570, kind: "volcano" },
     { name: "Agung", lat: -8.3435, lon: 115.5071, relativeHeight: 2880, kind: "volcano" },
   ],
-  orbit: { position: [0, 30, 72], target: [-1, 2, -20] },
+  // Home view from mid-gorge, looking north-east at the row of five eastern facades.
+  orbit: { position: [0, 9, 8], target: [10.5, 4, -15] },
   realms: {
     lower: "Bhurloka · foot — gorge floor, paths and niche pavings",
     middle: "Bhuvarloka · body — cliff faces and shrine bodies",

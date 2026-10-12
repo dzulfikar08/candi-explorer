@@ -178,7 +178,7 @@ const CLIMB: readonly [number, number, number][] = [
 
 export const ijo: CandiDefinition = {
   id: "ijo",
-  name: "Candi Ijo",
+  name: "Ijo",
   location: "Sleman, DI Yogyakarta",
   site: { lat: -7.7839, lon: 110.512 },
   overviewTopic: "overview",
@@ -197,7 +197,7 @@ export const ijo: CandiDefinition = {
     // The Gunungkidul limestone hills stand ≈ 600 m asl, barely above the temple's own 410 m.
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 190, kind: "ridge" },
   ],
-  orbit: { position: [-135, 55, 105], target: [15, 14, 0] },
+  orbit: { position: [0, 65, 40], target: [75, 20, 0] },
   realms: {
     lower: "Bhurloka · foot",
     middle: "Bhuvarloka · body",

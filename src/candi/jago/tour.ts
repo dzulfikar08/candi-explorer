@@ -1,5 +1,4 @@
-import type { Vector3 } from "three";
-import type { Flight } from "../kit/shrine";
+import { Flight } from "../kit/shrine";
 import { eye, loop, path } from "../kit/tour";
 import type { TourSection } from "../types";
 import { FLIGHTS, TERRACE_TOP } from "./model";

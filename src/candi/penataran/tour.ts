@@ -31,7 +31,7 @@ function shrineWalk(spec: ShrineSpec, at: Vec2, baseY: number, front: Direction,
 export function buildTour(): TourSection[] {
   const dated = shrineWalk(DATED, { x: -21, z: 16 }, 0, "west");
   const naga = shrineWalk(NAGA, { x: 2, z: 3 }, 1.2, "west", 2.5);
-  const cella = shrineWalk(CELLA, { x: 48, z: 0 }, 9.79, "west");
+  const cella = shrineWalk(CELLA, { x: 69, z: 6 }, 2.6, "west");
 
   return [
     {
@@ -100,9 +100,9 @@ export function buildTour(): TourSection[] {
     },
     {
       topic: "summit",
-      label: "The top shrine",
+      label: "The reconstructed shrine",
       lookRight: 0.3,
-      points: [eye(36, 7.9, 0), eye(38.1, 9.6, 0), ...cella, eye(38, 7.46, 0), eye(32, 5.06, 0), eye(28, 2.66, 8)],
+      points: [eye(36, 7.4, 0), eye(34.6, 5.4, 0), eye(33, 2.66, 0), ...cella, eye(56, 2.66, 10), eye(42, 2.66, 12), eye(31, 2.66, 6)],
     },
   ];
 }

@@ -125,7 +125,9 @@ export const batujaya: CandiDefinition = {
     { name: "Gunung Pangrango", lat: -6.776, lon: 106.982, relativeHeight: 2951, kind: "volcano" },
     { name: "Gunung Sanggabuana", lat: -6.533, lon: 107.367, relativeHeight: 1284, kind: "ridge" },
   ],
-  orbit: { position: [110, 60, 130], target: [0, 6, 0] },
+  // The pair is ~200 m apart and low, too far to frame together: open on Blandongan from the
+  // north-west with Jiwa visible down the axis behind it.
+  orbit: { position: [-92, 18, -110], target: [-62, 1.6, -74] },
   realms: {
     lower: "Kamadhatu · foot",
     middle: "Rupadhatu · body",
