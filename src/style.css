@@ -1126,6 +1126,14 @@ body[data-view="map"] > :not(#atlas, script) {
   background: #d5e0dc;
   cursor: grab;
   touch-action: none;
+  /* Dragging pans the map; it must not select marker labels. The card stays selectable. */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.atlas-card {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .atlas-map:active {
