@@ -22,6 +22,8 @@ import { WalkController } from "./controls/walk";
 import { createEnvironment } from "./render/environment";
 import { createStoneTextures } from "./render/stone";
 import { mountPromo } from "./promo";
+import { mountVisitors } from "./visitors";
+import { enhanceSelect } from "./ui/select";
 
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
@@ -205,6 +207,7 @@ function start(candi: CandiDefinition): void {
     tour.speed = Number(ui.tourSpeed.value);
   });
   tour.speed = Number(ui.tourSpeed.value);
+  enhanceSelect(ui.tourSpeed);
   ui.tourExit.addEventListener("click", () => setMode("orbit"));
 
   let mode: Mode = "orbit";
@@ -255,6 +258,8 @@ function start(candi: CandiDefinition): void {
   const applyTime = () => {
     const minutes = Number(ui.time.value);
     ui.timeLabel.textContent = `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+    const min = Number(ui.time.min);
+    ui.time.style.setProperty("--fill", `${((minutes - min) / (Number(ui.time.max) - min)) * 100}%`);
     env.setTime(minutes);
   };
   ui.time.addEventListener("input", applyTime);
@@ -317,6 +322,7 @@ function start(candi: CandiDefinition): void {
 }
 
 mountPromo(element("promo"));
+mountVisitors(element("visitors"));
 
 // Let the loading message paint before the synchronous build.
 requestAnimationFrame(() =>
