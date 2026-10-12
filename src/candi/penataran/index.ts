@@ -103,7 +103,7 @@ const topics: Record<string, Topic> = {
     kicker: "The top of the main temple",
     title: "A shrine without a stone roof",
     paragraphs: [
-      "The three terraces rise 7.19 m in all. The temple's upper shrine — a small walk-in cella — collapsed long ago; it is shown here as rebuilt on the ground beside the stepped base, with the top of the third terrace left empty. No stones that could have formed a stone roof were found anywhere in the complex, so scholars reconstruct a wooden frame roofed with palm fibre or thatch in receding tiers, like the meru roofs of Balinese temples.",
+      "The three terraces rise 7.19 m in all. The temple's upper shrine — a small walk-in cella — collapsed long ago. This model shows it on the ground beside the stepped base, with the top of the third terrace left empty; that placement is a drawing choice, not something the sources describe. No stones that could have formed a stone roof were found anywhere in the complex, so scholars reconstruct a wooden frame roofed with palm fibre or thatch in receding tiers, like the meru roofs of Balinese temples.",
       "R. Soekmono concluded that the central chamber was empty: no divine image stood in it. Penataran therefore records the passage from the stone-roofed temples of Central Java to the organic-roofed sanctuaries still in use in Bali. A comparable temple, Pura Yeh Gangga in Bali, was built in 1334 with the same kind of substructure.",
       "Behind the temple, near the river that flows down from Kelud, lies a ritual bathing pool dated 1337 Saka — 1415 CE, the youngest date in the complex. A century's pilgrimages later, the Sundanese chronicle of Bujangga Manik still names Rabut Palah as a place of learning, though he complains the pilgrims had grown worldly.",
     ],
@@ -128,7 +128,7 @@ export const penataran: CandiDefinition = {
     { topic: "dated", label: "The Dated Temple", anchor: [-21, 5.5, 16], view: { position: [-37, 6.5, 28], target: [-20.5, 4, 16] } },
     { topic: "naga", label: "The Naga Temple", anchor: [2, 4.2, 3], view: { position: [-14, 8, 15], target: [2, 3.5, 3] } },
     { topic: "reliefs", label: "Ramayana reliefs", anchor: [30.5, 4.8, 0], view: { position: [12, 8, 15], target: [30, 4.2, 0] } },
-    { topic: "summit", label: "The reconstructed shrine", anchor: [69, 4, 6], view: { position: [50, 9, 18], target: [66, 3.5, 6] } },
+    { topic: "summit", label: "The upper shrine", anchor: [69, 4, 6], view: { position: [50, 9, 18], target: [66, 3.5, 6] } },
   ],
   horizon: [
     { name: "Kelud", lat: -7.93, lon: 112.3094, relativeHeight: 1281, kind: "volcano" },
