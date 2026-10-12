@@ -77,6 +77,8 @@ input {
   flex-direction: column;
   gap: 8px;
   width: 250px;
+  /* Above the hotspot markers, so the temple picker's list covers them when open. */
+  z-index: 2;
 }
 
 .brand {

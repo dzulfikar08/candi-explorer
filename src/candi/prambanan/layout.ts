@@ -19,7 +19,7 @@ export const SHIVA: ShrineSpec = {
   door: { width: 2, height: 3.6 },
   doors: ["east", "south", "west", "north"],
   stairWidth: 3,
-  roof: { tiers: 6, first: 6.4, ...RATNA_ROOF },
+  roof: { tiers: 6, first: 6.9, ...RATNA_ROOF },
   crown: { kind: "ratna", height: 5 },
   image: { kind: "deity", height: 3 },
 };
@@ -32,7 +32,7 @@ export const TRIMURTI_FLANK: ShrineSpec = {
   door: { width: 1.6, height: 2.8 },
   doors: ["east"],
   stairWidth: 2.4,
-  roof: { tiers: 5, first: 4.6, ...RATNA_ROOF },
+  roof: { tiers: 5, first: 4.9, ...RATNA_ROOF },
   crown: { kind: "ratna", height: 4.2 },
   image: { kind: "deity", height: 2.4 },
   niches: "deity",
@@ -80,7 +80,7 @@ export const PERWARA: ShrineSpec = {
   door: { width: 0.9, height: 1.8 },
   doors: ["east"],
   stairWidth: 1.2,
-  roof: { tiers: 4, first: 2, ...RATNA_ROOF },
+  roof: { tiers: 4, first: 2.3, ...RATNA_ROOF },
   crown: { kind: "ratna", height: 2.2 },
   niches: "empty",
 };

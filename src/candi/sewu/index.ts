@@ -63,7 +63,8 @@ function standing(row: number, i: number): boolean {
   return ((i * 7 + row * 3) % 10) < (row < 2 ? 4 : 1);
 }
 
-function shrines(): CompoundShrine[] {
+/** All 249 temples: main, 8 apit, 240 perwara. */
+export function sewuShrines(): CompoundShrine[] {
   const out: CompoundShrine[] = [{ spec: MAIN, at: { x: 0, z: 0 }, facing: "east", tour: { topic: "main", label: "Main temple" } }];
   // Apit pairs flank each axial path between the main temple and the first row.
   for (const [x, z, facing] of [
@@ -166,7 +167,7 @@ export const sewu: CandiDefinition = {
         name: "Sewu",
         courts: [{ halfX: 20, halfZ: 20 }],
         enclosures: [{ halfX: 82.5, halfZ: 92.5, height: 1.4, thickness: 0.8, gates: ["east", "south", "west", "north"], gateWidth: 5, gate: "none" }],
-        shrines: shrines(),
+        shrines: sewuShrines(),
         extra(site) {
           // Kneeling guardians either side of every gate, facing out.
           const statue = site.get("lower", "statue");
