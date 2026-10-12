@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "candi-explorer",
+  // dzulfikar.com lives in this account; pinned so non-interactive deploys don't have to choose.
+  "account_id": "b7e6f8457bd39fa37a7eea5249799754",
+  "compatibility_date": "2026-10-01",
+  // Static site only: Vite's dist/ served by Workers Static Assets, no Worker script.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [{ "pattern": "candi-explorer.by.dzulfikar.com", "custom_domain": true }],
+  "workers_dev": false
+}
