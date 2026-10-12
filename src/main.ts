@@ -106,6 +106,13 @@ function start(candi: CandiDefinition): void {
   camera.position.set(...home.position);
   orbit.target.copy(target);
   orbit.update();
+  // Slow showcase spin (~100 s per lap) until the visitor first takes control.
+  orbit.autoRotate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  orbit.autoRotateSpeed = 0.6;
+  const stopAutoRotate = () => {
+    orbit.autoRotate = false;
+  };
+  orbit.addEventListener("start", stopAutoRotate);
 
   let flight: { from: CameraView; to: CameraView; t: number } | null = null;
   const flyTo = (view: CameraView) => {
@@ -215,6 +222,7 @@ function start(candi: CandiDefinition): void {
     if (next === "walk" && !canWalk) return;
     const previous = mode;
     mode = next;
+    stopAutoRotate();
     document.body.dataset.mode = next;
     for (const b of ui.modeButtons) b.setAttribute("aria-pressed", String(b.dataset.mode === next));
     orbit.enabled = next === "orbit";
@@ -305,7 +313,7 @@ function start(candi: CandiDefinition): void {
         orbit.target.fromArray(flight.from.target).lerp(new Vector3(...flight.to.target), k);
         if (flight.t >= 1) flight = null;
       }
-      orbit.update();
+      orbit.update(dt);
       updateHotspots();
     } else if (mode === "walk") {
       walk.update(dt);
