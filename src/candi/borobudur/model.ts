@@ -1,23 +1,7 @@
-import {
-  CircleGeometry,
-  CylinderGeometry,
-  Group,
-  InstancedMesh,
-  Matrix4,
-  Mesh,
-  Quaternion,
-  Vector3,
-  type BufferGeometry,
-  type Material,
-  type Object3D,
-} from "three";
-import { MeshBuilder, type V3 } from "../../render/mesh-builder";
-import {
-  createStoneMaterials,
-  type StoneMaterialKey,
-  type StoneMaterials,
-  type StoneTextures,
-} from "../../render/stone";
+import { CircleGeometry, CylinderGeometry, Matrix4, Quaternion, Vector3, type BufferGeometry } from "three";
+import type { MeshBuilder, V3 } from "../../render/mesh-builder";
+import type { StoneMaterialKey, StoneTextures } from "../../render/stone";
+import { Site } from "../kit/site";
 import type { CandiModel, Realm } from "../types";
 import {
   AXES,
@@ -54,12 +38,6 @@ import { buildTour } from "./tour";
 
 /** Width of one carved panel along a relief wall. */
 const PANEL_WIDTH = 2.4;
-
-const REALM_TINT: Record<Realm, string> = {
-  kamadhatu: "#c27b5c",
-  rupadhatu: "#d8b250",
-  arupadhatu: "#8fb7d6",
-};
 
 const MUDRA_BY_DIRECTION: Record<Direction, Mudra> = {
   east: "bhumisparsa",
@@ -124,35 +102,17 @@ function moulding(b: MeshBuilder, loop: Vec2[], out: number, y0: number, y1: num
 }
 
 export function buildBorobudur(textures: StoneTextures): CandiModel {
-  const materials: Record<Realm, StoneMaterials> = {
-    kamadhatu: createStoneMaterials(textures),
-    rupadhatu: createStoneMaterials(textures),
-    arupadhatu: createStoneMaterials(textures),
-  };
-  const builders = new Map<string, { realm: Realm; key: StoneMaterialKey; builder: MeshBuilder }>();
-  const builder = (realm: Realm, key: StoneMaterialKey) => {
-    const id = `${realm}:${key}`;
-    let entry = builders.get(id);
-    if (!entry) {
-      entry = { realm, key, builder: new MeshBuilder() };
-      builders.set(id, entry);
-    }
-    return entry.builder;
-  };
-
-  const group = new Group();
-  group.name = "Borobudur";
-  const collidables: Object3D[] = [];
+  const site = new Site("Borobudur", textures);
 
   // Square levels: base (Kamadhatu) and five terraces (Rupadhatu).
   for (const level of SQUARE_LEVELS) {
-    const realm: Realm = level.index === 0 ? "kamadhatu" : "rupadhatu";
+    const realm: Realm = level.index === 0 ? "lower" : "middle";
     const outline = redentedOutline(level.half, STAIR_NOTCH_DEPTH);
-    const masonry = builder(realm, "masonry");
+    const masonry = site.get(realm, "masonry");
     // Terrace 2's face is the first gallery's main wall (two narrative rows); 3-5 carry one row.
-    const relief = level.index === 2 ? builder(realm, "reliefDouble") : level.index > 2 ? builder(realm, "reliefSingle") : null;
+    const relief = level.index === 2 ? site.get(realm, "reliefDouble") : level.index > 2 ? site.get(realm, "reliefSingle") : null;
     loopWalls(relief, masonry, outline, level.bottom, level.top);
-    builder(realm, "floor").cap(outline, level.top);
+    site.get(realm, "floor").cap(outline, level.top);
     if (!relief) {
       moulding(masonry, outline, 0.28, level.top - 0.5, level.top - 0.18);
       moulding(masonry, outline, 0.22, level.bottom, level.bottom + 0.45);
@@ -163,7 +123,7 @@ export function buildBorobudur(textures: StoneTextures): CandiModel {
   for (const { from, to, normal } of hiddenFootWindows()) {
     const len = Math.hypot(to.x - from.x, to.z - from.z);
     const o = 0.03;
-    builder("kamadhatu", "reliefSingle").quad(
+    site.get("lower", "reliefSingle").quad(
       [from.x + normal.x * o, 0.5, from.z + normal.z * o],
       [to.x + normal.x * o, 0.5, to.z + normal.z * o],
       [to.x + normal.x * o, 3.0, to.z + normal.z * o],
@@ -194,8 +154,8 @@ export function buildBorobudur(textures: StoneTextures): CandiModel {
     const y0 = level.top;
     const y1 = level.top + H;
     const centre = offsetOrthogonal(redentedOutline(level.half), -t / 2);
-    const outer = builder("rupadhatu", "masonry");
-    const inner = builder("rupadhatu", "reliefSingle");
+    const outer = site.get("middle", "masonry");
+    const inner = site.get("middle", "reliefSingle");
     for (const run of cornerRuns(centre, W)) {
       let along = 0;
       const last = run.normals.length - 1;
@@ -246,22 +206,22 @@ export function buildBorobudur(textures: StoneTextures): CandiModel {
   const finial = finialGeometry(1.3);
   for (const axis of AXES) {
     flightsForAxis(axis).forEach((flight, i) => {
-      const realm: Realm = i === 0 ? "kamadhatu" : i <= 5 ? "rupadhatu" : "arupadhatu";
+      const realm: Realm = i === 0 ? "lower" : i <= 5 ? "middle" : "upper";
       // Flights that start on a wide floor get projecting cheeks with makara ends.
       const open = i === 0 || i === 1 || i === 6;
-      addFlight(builder(realm, "floor"), builder(realm, "masonry"), flight, open);
-      if (i >= 1 && i <= 5) addGate(builder(realm, "masonry"), axis, SQUARE_LEVELS[i].half, SQUARE_LEVELS[i].top, finial);
+      addFlight(site.get(realm, "floor"), site.get(realm, "masonry"), flight, open);
+      if (i >= 1 && i <= 5) addGate(site.get(realm, "masonry"), axis, SQUARE_LEVELS[i].half, SQUARE_LEVELS[i].top, finial);
     });
   }
 
   // Circular terraces (Arupadhatu).
-  const circular = builder("arupadhatu", "masonry");
+  const circular = site.get("upper", "masonry");
   for (const terrace of CIRCULAR_TERRACES) {
     const h = terrace.top - terrace.bottom;
     circular.geometry(new CylinderGeometry(terrace.radius, terrace.radius, h, 128, 1, true), translate(0, terrace.bottom + h / 2, 0));
     circular.geometry(new CylinderGeometry(terrace.radius + 0.22, terrace.radius + 0.22, 0.3, 128), translate(0, terrace.top - 0.3, 0));
     circular.geometry(new CylinderGeometry(terrace.radius + 0.18, terrace.radius + 0.18, 0.4, 128), translate(0, terrace.bottom + 0.2, 0));
-    builder("arupadhatu", "floor").geometry(
+    site.get("upper", "floor").geometry(
       new CircleGeometry(terrace.radius, 128),
       new Matrix4().makeTranslation(0, terrace.top, 0).multiply(new Matrix4().makeRotationX(-Math.PI / 2)),
     );
@@ -281,58 +241,22 @@ export function buildBorobudur(textures: StoneTextures): CandiModel {
     }
   }
 
-  // Merge builders into meshes.
-  for (const { realm, key, builder: b } of builders.values()) {
-    if (b.empty) continue;
-    const mesh = new Mesh(b.build(), materials[realm][key]);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.name = `${realm}:${key}`;
-    group.add(mesh);
-    collidables.push(mesh);
-  }
-
-  const instanced = (geometry: BufferGeometry, material: Material, matrices: Matrix4[], collide: boolean) => {
-    if (matrices.length === 0) return;
-    const mesh = new InstancedMesh(geometry, material, matrices.length);
-    matrices.forEach((m, i) => mesh.setMatrixAt(i, m));
-    mesh.instanceMatrix.needsUpdate = true;
-    mesh.computeBoundingSphere();
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    group.add(mesh);
-    if (collide) collidables.push(mesh);
+  const instanced = (geometry: BufferGeometry, realm: Realm, key: StoneMaterialKey, matrices: Matrix4[], collide: boolean) => {
+    if (matrices.length > 0) site.instanceGeometry(geometry, site.material(realm, key), matrices, collide);
   };
-
-  const rupa = materials.rupadhatu;
-  const arupa = materials.arupadhatu;
-  instanced(nicheFrameGeometry(), rupa.masonry, nicheMatrices, false);
-  instanced(nicheShadowGeometry(), rupa.nicheShadow, nicheMatrices, false);
+  instanced(nicheFrameGeometry(), "middle", "masonry", nicheMatrices, false);
+  instanced(nicheShadowGeometry(), "middle", "nicheShadow", nicheMatrices, false);
   for (const [mudra, matrices] of Object.entries(buddhaMatrices) as [Mudra, Matrix4[]][]) {
-    instanced(buddhaGeometry(mudra), mudra === "dharmachakra" ? arupa.statue : rupa.statue, matrices, false);
+    instanced(buddhaGeometry(mudra), mudra === "dharmachakra" ? "upper" : "middle", "statue", matrices, false);
   }
   const allStupas = [...stupaMatrices.diamond, ...stupaMatrices.square];
-  instanced(perforatedStupaSolidGeometry(), arupa.masonry, allStupas, true);
+  instanced(perforatedStupaSolidGeometry(), "upper", "masonry", allStupas, true);
   const bell = perforatedStupaBellGeometry();
-  instanced(bell, arupa.latticeDiamond, stupaMatrices.diamond, true);
-  instanced(bell, arupa.latticeSquare, stupaMatrices.square, true);
-
-  const baseColours = new Map<Material, string>();
-  for (const set of Object.values(materials)) {
-    for (const m of Object.values(set)) baseColours.set(m, `#${m.color.getHexString()}`);
-  }
+  instanced(bell, "upper", "latticeDiamond", stupaMatrices.diamond, true);
+  instanced(bell, "upper", "latticeSquare", stupaMatrices.square, true);
 
   return {
-    group,
-    collidables,
-    setRealmHighlight(on) {
-      for (const [realm, set] of Object.entries(materials) as [Realm, StoneMaterials][]) {
-        for (const [key, m] of Object.entries(set) as [StoneMaterialKey, StoneMaterials[StoneMaterialKey]][]) {
-          if (key === "nicheShadow") continue;
-          m.color.set(on ? REALM_TINT[realm] : baseColours.get(m)!);
-        }
-      }
-    },
+    ...site.finish(),
     tour: buildTour(),
     walkSpawn: { position: new Vector3(92, 0, 0), yaw: Math.PI / 2 },
   };

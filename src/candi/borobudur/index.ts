@@ -214,5 +214,11 @@ export const borobudur: CandiDefinition = {
     { name: "Menoreh Hills", lat: -7.7, lon: 110.15, relativeHeight: 650, kind: "ridge" },
   ],
   orbit: { position: [150, 70, 95], target: [0, 12, 0] },
+  realms: {
+    lower: "Kamadhatu · base",
+    middle: "Rupadhatu · square galleries",
+    upper: "Arupadhatu · circular terraces",
+  },
+  setting: { plazaRadius: 140, shadowExtent: 85, approach: { x: 1, z: 0, start: 64 } },
   build: buildBorobudur,
 };

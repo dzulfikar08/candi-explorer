@@ -104,6 +104,30 @@ input {
   font-size: 13px;
 }
 
+.candi-picker {
+  display: block;
+  margin-top: 8px;
+  pointer-events: auto;
+}
+
+.candi-picker .select,
+.candi-picker .select-trigger {
+  width: 100%;
+}
+
+.candi-picker .select-content {
+  max-height: min(420px, 60vh);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .brand-visitors {
   display: flex;
   align-items: center;
@@ -473,15 +497,15 @@ body[data-mode="walk"] .promo {
   border: 1px solid rgb(0 0 0 / 0.2);
 }
 
-.swatch-kama {
+.swatch-lower {
   background: #c27b5c;
 }
 
-.swatch-rupa {
+.swatch-middle {
   background: #d8b250;
 }
 
-.swatch-arupa {
+.swatch-upper {
   background: #8fb7d6;
 }
 

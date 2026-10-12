@@ -40,7 +40,11 @@ export interface TourSection {
   lookRight: number;
 }
 
-export type Realm = "kamadhatu" | "rupadhatu" | "arupadhatu";
+/**
+ * Javanese temples read bottom to top as three cosmological zones: Kamadhatu / Rupadhatu /
+ * Arupadhatu in Buddhist terms, Bhurloka / Bhuvarloka / Svarloka (foot, body, roof) in Hindu ones.
+ */
+export type Realm = "lower" | "middle" | "upper";
 
 export interface CandiModel {
   group: Group;
@@ -61,5 +65,20 @@ export interface CandiDefinition {
   hotspots: Hotspot[];
   horizon: HorizonFeature[];
   orbit: CameraView;
+  /** Legend for the three-realm overlay, bottom zone first. */
+  realms: Record<Realm, string>;
+  setting: {
+    /** Ground stays flat (and treeless) out to this radius, metres. */
+    plazaRadius: number;
+    /** Half width of the sun's shadow frustum; covers the main structures. */
+    shadowExtent: number;
+    /** Approach road: unit vector out from the monument (+x east, +z south) and where it starts. */
+    approach: { x: number; z: number; start: number };
+    /**
+     * Sunken court centred on the origin (Sambisari lies below today's ground): the terrain gets a
+     * rectangular hole of this size and the site builds its walls and floor.
+     */
+    pit?: { halfX: number; halfZ: number };
+  };
   build(textures: StoneTextures): CandiModel;
 }

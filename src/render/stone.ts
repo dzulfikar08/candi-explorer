@@ -10,16 +10,20 @@ import {
 } from "three";
 
 /**
- * Procedural andesite textures. Each generator paints a height field first, then derives the colour
- * from it (cavities darker, weathering stains from low-frequency noise), so bump and albedo agree.
+ * Procedural andesite and brick textures. Each generator paints a height field first, then derives
+ * the colour from it (cavities darker, weathering stains from low-frequency noise), so bump and
+ * albedo agree.
  */
 
 /** World-projected UVs are in metres; masonry and paving tiles cover this many metres. */
 export const STONE_TILE_METRES = 4;
 
-const ANDESITE: [number, number, number] = [122, 116, 108];
-const LICHEN: [number, number, number] = [48, 47, 44];
-const MOSS: [number, number, number] = [86, 92, 62];
+type RGB = [number, number, number];
+const ANDESITE: RGB = [122, 116, 108];
+/** Fired red brick of the Majapahit and Sumatran temples. */
+const BRICK: RGB = [158, 86, 58];
+const LICHEN: RGB = [48, 47, 44];
+const MOSS: RGB = [86, 92, 62];
 
 function rng(seed: number): () => number {
   let a = seed >>> 0;
@@ -72,7 +76,7 @@ interface StoneMaps {
 }
 
 /** Turn a painted height canvas into colour + bump textures. */
-function weather(height: HTMLCanvasElement, seed: number, stainFromTop: boolean): StoneMaps {
+function weather(height: HTMLCanvasElement, seed: number, stainFromTop: boolean, base: RGB = ANDESITE): StoneMaps {
   const { width, height: h } = height;
   const hctx = height.getContext("2d", { willReadFrequently: true })!;
   const heights = hctx.getImageData(0, 0, width, h).data;
@@ -95,7 +99,7 @@ function weather(height: HTMLCanvasElement, seed: number, stainFromTop: boolean)
       // Gentle cavity darkening so carving still reads in shade; the bump map does the rest.
       const shade = 0.66 + 0.42 * Math.min(ht, 0.75) + (grain() - 0.5) * 0.08;
       for (let k = 0; k < 3; k++) {
-        let c = ANDESITE[k] * shade;
+        let c = base[k] * shade;
         c = c + (LICHEN[k] - c) * lichen * 0.75;
         c = c + (MOSS[k] - c) * Math.min(1, moss);
         out.data[i + k] = Math.max(0, Math.min(255, c));
@@ -159,6 +163,27 @@ function paving(): StoneMaps {
     }
   }
   return weather(c, 22, false);
+}
+
+/** Rubbed brick in thin, nearly mortarless courses (Majapahit bricks are about 35 × 7 cm). */
+function brickwork(): StoneMaps {
+  const size = 1024;
+  const [c, ctx] = canvas(size, size);
+  const r = rng(51);
+  const rows = 56;
+  const rowH = size / rows;
+  ctx.fillStyle = grey(0.3);
+  ctx.fillRect(0, 0, size, size);
+  for (let row = 0; row < rows; row++) {
+    let x = row % 2 ? -45 : 0;
+    while (x < size) {
+      const w = 80 + r() * 20;
+      ctx.fillStyle = grey(0.62 + r() * 0.18);
+      for (const offset of [0, -size]) ctx.fillRect(x + offset + 1, row * rowH + 1, w - 2, rowH - 2);
+      x += w;
+    }
+  }
+  return weather(c, 52, true, BRICK);
 }
 
 /** Paint one carved figure into a panel (all heights relative to the recessed field). */
@@ -307,6 +332,7 @@ function lattice(kind: "diamond" | "square"): Texture {
 export interface StoneTextures {
   masonry: StoneMaps;
   paving: StoneMaps;
+  brick: StoneMaps;
   reliefDouble: StoneMaps;
   reliefSingle: StoneMaps;
   latticeDiamond: Texture;
@@ -317,12 +343,13 @@ export function createStoneTextures(): StoneTextures {
   const textures = {
     masonry: masonry(),
     paving: paving(),
+    brick: brickwork(),
     reliefDouble: relief(2, 31),
     reliefSingle: relief(1, 41),
     latticeDiamond: lattice("diamond"),
     latticeSquare: lattice("square"),
   };
-  for (const maps of [textures.masonry, textures.paving]) {
+  for (const maps of [textures.masonry, textures.paving, textures.brick]) {
     for (const t of [maps.map, maps.bump]) t.repeat.set(1 / STONE_TILE_METRES, 1 / STONE_TILE_METRES);
   }
   return textures;
@@ -340,14 +367,21 @@ export type StoneMaterialKey =
 
 export type StoneMaterials = Record<StoneMaterialKey, MeshStandardMaterial>;
 
-/** One material set per realm, so the realm overlay can tint each set independently. */
-export function createStoneMaterials(t: StoneTextures): StoneMaterials {
+/** Building stone: Central Javanese andesite, or the red brick of Majapahit and Sumatra. */
+export type Fabric = "andesite" | "brick";
+
+/**
+ * One material set per realm, so the realm overlay can tint each set independently. Brick sites
+ * build walls and floors in brick; their carved panels are tinted to match, statues stay andesite.
+ */
+export function createStoneMaterials(t: StoneTextures, fabric: Fabric = "andesite"): StoneMaterials {
   const stone = (maps: StoneMaps, bumpScale: number) =>
     new MeshStandardMaterial({ map: maps.map, bumpMap: maps.bump, bumpScale, roughness: 0.93, metalness: 0 });
+  const walls = fabric === "brick" ? t.brick : t.masonry;
   const latticeMaterial = (alphaMap: Texture) =>
     new MeshStandardMaterial({
-      map: t.masonry.map,
-      bumpMap: t.masonry.bump,
+      map: walls.map,
+      bumpMap: walls.bump,
       bumpScale: 1.5,
       alphaMap,
       alphaTest: 0.5,
@@ -357,11 +391,16 @@ export function createStoneMaterials(t: StoneTextures): StoneMaterials {
   const statue = stone(t.masonry, 0.6);
   statue.color = new Color("#cfc8bc");
   statue.roughness = 0.85;
+  const reliefDouble = stone(t.reliefDouble, 4);
+  const reliefSingle = stone(t.reliefSingle, 4);
+  if (fabric === "brick") {
+    for (const m of [reliefDouble, reliefSingle]) m.color = new Color("#e0a585");
+  }
   return {
-    masonry: stone(t.masonry, 2),
-    floor: stone(t.paving, 1.5),
-    reliefDouble: stone(t.reliefDouble, 4),
-    reliefSingle: stone(t.reliefSingle, 4),
+    masonry: stone(walls, 2),
+    floor: fabric === "brick" ? stone(t.brick, 1.2) : stone(t.paving, 1.5),
+    reliefDouble,
+    reliefSingle,
     statue,
     latticeDiamond: latticeMaterial(t.latticeDiamond),
     latticeSquare: latticeMaterial(t.latticeSquare),

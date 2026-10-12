@@ -15,8 +15,8 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { acceleratedRaycast, computeBoundsTree } from "three-mesh-bvh";
-import { borobudur } from "./candi/borobudur";
-import type { CameraView, CandiDefinition, CandiModel } from "./candi/types";
+import { CANDI, type CandiEntry } from "./candi";
+import type { CameraView, CandiDefinition, CandiModel, Realm } from "./candi/types";
 import { TourController } from "./controls/tour";
 import { WalkController } from "./controls/walk";
 import { createEnvironment } from "./render/environment";
@@ -52,6 +52,7 @@ const ui = {
   modeButtons: [...document.querySelectorAll<HTMLButtonElement>("[data-mode]")],
   realms: element<HTMLButtonElement>("realms-toggle"),
   legend: element("realm-legend"),
+  picker: element<HTMLSelectElement>("candi-picker"),
   time: element<HTMLInputElement>("time"),
   timeLabel: element<HTMLOutputElement>("time-label"),
   walkHint: element("walk-hint"),
@@ -88,6 +89,15 @@ function start(candi: CandiDefinition): void {
   ui.name.textContent = candi.name;
   ui.location.textContent = candi.location;
   document.title = `Candi Explorer · ${candi.name}`;
+  ui.legend.replaceChildren(
+    ...(["lower", "middle", "upper"] satisfies Realm[]).map((realm) => {
+      const p = document.createElement("p");
+      const swatch = document.createElement("span");
+      swatch.className = `swatch swatch-${realm}`;
+      p.append(swatch, candi.realms[realm]);
+      return p;
+    }),
+  );
 
   // Orbit camera.
   const orbit = new OrbitControls(camera, ui.canvas);
@@ -332,17 +342,31 @@ function start(candi: CandiDefinition): void {
 mountPromo(element("promo"));
 mountVisitors(element("visitors"));
 
-// Let the loading message paint before the synchronous build.
-requestAnimationFrame(() =>
-  setTimeout(() => {
-    try {
-      start(borobudur);
-    } catch (err) {
-      console.error(err);
-      ui.loading.textContent =
-        err instanceof Error && /WebGL/i.test(err.message)
-          ? "This browser could not start WebGL, which the 3D view needs. Try a current Chrome, Firefox or Safari."
-          : "The temple failed to load. Reload the page to try again.";
-    }
-  }, 0),
+// One temple per page: /<id> picks it, `/` is the first. Switching reloads for a clean scene.
+const requested = location.pathname.split("/")[1] ?? "";
+const entry: CandiEntry = CANDI.find((c) => c.id === requested) ?? CANDI[0];
+for (const c of CANDI) ui.picker.add(new Option(c.name, c.id, false, c.id === entry.id));
+enhanceSelect(ui.picker);
+ui.picker.addEventListener("change", () => location.assign(`/${ui.picker.value}`));
+
+const fail = (err: unknown) => {
+  console.error(err);
+  ui.loading.textContent =
+    err instanceof Error && /WebGL/i.test(err.message)
+      ? "This browser could not start WebGL, which the 3D view needs. Try a current Chrome, Firefox or Safari."
+      : "The temple failed to load. Reload the page to try again.";
+};
+entry.load().then(
+  (candi) =>
+    // Let the loading message paint before the synchronous build.
+    requestAnimationFrame(() =>
+      setTimeout(() => {
+        try {
+          start(candi);
+        } catch (err) {
+          fail(err);
+        }
+      }, 0),
+    ),
+  fail,
 );

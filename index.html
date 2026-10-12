@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Explore Candi Borobudur in 3D: walk the galleries, follow the pradaksina path, and read about each level." />
+    <meta name="description" content="Explore Indonesian temples in 3D: Borobudur, Prambanan and more. Walk the galleries, follow the pradaksina path, and read about each level." />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -19,8 +19,12 @@
     <div class="corner">
       <header class="brand">
         <p class="brand-app">Candi Explorer</p>
-        <h1 id="candi-name">Borobudur</h1>
+        <h1 id="candi-name">Candi</h1>
         <p id="candi-location" class="brand-location"></p>
+        <label class="candi-picker">
+          <span class="visually-hidden">Choose a temple</span>
+          <select id="candi-picker"></select>
+        </label>
         <p id="visitors" class="brand-visitors" hidden></p>
         <p class="brand-credit">
           Made by <a href="https://joyodigitama.com" target="_blank" rel="noopener">JoyoDigitama</a> ·
@@ -79,11 +83,7 @@
       </label>
     </nav>
 
-    <div id="realm-legend" class="legend" hidden>
-      <p><span class="swatch swatch-kama"></span>Kamadhatu · base</p>
-      <p><span class="swatch swatch-rupa"></span>Rupadhatu · square galleries</p>
-      <p><span class="swatch swatch-arupa"></span>Arupadhatu · circular terraces</p>
-    </div>
+    <div id="realm-legend" class="legend" hidden></div>
 
     <div id="walk-hint" class="walk-hint" hidden>
       <p id="walk-hint-text">Click the view to look around. W A S D to walk, Shift to hurry, Esc to release the mouse.</p>
