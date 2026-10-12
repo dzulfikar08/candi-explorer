@@ -44,7 +44,8 @@ export function Promo(): JSX.Element {
 
   const promo = PROMOS[index];
   return (
-    <div ref={rootRef} data-slot="promo" className="w-full rounded-lg border border-border bg-card p-3 shadow-xs" aria-label="More from the makers">
+    // Fixed width: long taglines wrap (two lines reserved below) instead of widening the card.
+    <div ref={rootRef} data-slot="promo" className="w-[260px] max-w-full rounded-lg border border-border bg-card p-3 shadow-xs" aria-label="More from the makers">
       {/* min-h on the tagline reserves two lines so the card doesn't jump as taglines rotate */}
       <a
         href={utmUrl(promo.href, "corner-card")}
@@ -54,7 +55,7 @@ export function Promo(): JSX.Element {
       >
         <img src={promo.icon} alt="" width={32} height={32} className="col-start-1 row-span-2 size-8 rounded-md" />
         <span className="font-semibold group-hover/card:underline">{promo.name}</span>
-        <span className="promo-tagline line-clamp-2 min-h-[2.7em] text-muted-foreground">{promo.tagline}</span>
+        <span className="promo-tagline line-clamp-3 min-h-[2.7em] text-muted-foreground">{promo.tagline}</span>
       </a>
       <div className="promo-meta mt-2.5 flex items-center justify-between border-t border-border pt-2 text-xs text-muted-foreground">
         More from us

@@ -108,7 +108,9 @@ plain static site, so any static host works too.
 Under the title and in the map sidebar, a card rotates (every 5 s) through other products by the
 same makers: the list is in `src/data/sponsor.ts`, the card in `src/app/promo.tsx`, icons in
 `public/ad-icons/`. Links carry `utm_source=candi-explorer`. It pauses on hover or focus, stays
-still with reduced motion, hides in walk mode, and on phones shrinks to a name pill. "Your product
+still with reduced motion, hides in walk mode, and on phones shrinks to a name pill. While a temple
+loads, the loading screen scrolls all products in a strip (`src/app/loading-screen.tsx`), a CSS
+animation that keeps moving while the 3D build is busy. "Your product
 here" opens `/advertise`, the sponsor page (Rp 19.900 a month, paid by QRIS through Pakasir). Its
 checkout button stays disabled until `PAKASIR_SLUG` in `src/data/sponsor.ts` is set. Forks should
 replace or remove both.

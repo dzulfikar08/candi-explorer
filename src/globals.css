@@ -76,3 +76,60 @@
     @apply font-heading;
   }
 }
+
+
+/* Scrollbars in the palette: a thin muted thumb on a clear track, darker on hover. Standard
+   properties for Firefox and current Chromium; the ::-webkit-* rules cover Safari. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--muted-foreground) 40%, transparent) transparent;
+  }
+  *:hover {
+    scrollbar-color: color-mix(in srgb, var(--muted-foreground) 65%, transparent) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--muted-foreground) 40%, transparent) padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--muted-foreground) 65%, transparent) padding-box;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* Loading-screen product strip (src/app/loading-screen.tsx): transform-only, so it runs on the
+   compositor while the scene build blocks the main thread. */
+@keyframes loading-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.loading-marquee-track {
+  animation: loading-marquee 45s linear infinite;
+  will-change: transform;
+}
+.loading-marquee:hover .loading-marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+  .loading-marquee-track > [aria-hidden] {
+    display: none;
+  }
+}

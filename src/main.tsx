@@ -4,6 +4,7 @@ import type { JSX } from "react";
 import { CANDI } from "@/candi";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AdvertisePage } from "@/app/advertise/advertise-page";
+import { LoadingScreen } from "@/app/loading-screen";
 
 import "./globals.css";
 
@@ -45,7 +46,7 @@ function App(): JSX.Element {
     body = <AdvertisePage />;
   } else if (route.page === "temple") {
     body = (
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<LoadingScreen message="Laying the stones…" />}>
         <TemplePage index={route.index} />
       </Suspense>
     );

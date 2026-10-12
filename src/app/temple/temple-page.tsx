@@ -2,6 +2,7 @@ import { type JSX, useEffect, useRef, useState } from "react";
 import { CANDI } from "@/candi";
 import type { CandiDefinition } from "@/candi/types";
 import type { Temple } from "@/candi";
+import { LoadingScreen } from "@/app/loading-screen";
 import { Promo } from "@/app/promo";
 import { createEngine, type Engine, type Mode } from "@/scene/engine";
 import { BrandCard } from "./brand-card";
@@ -65,46 +66,47 @@ export function TemplePage({ index }: { index: number }): JSX.Element {
     };
   }, [entry]);
 
-  // Build the scene once the canvas exists. The loading message must paint before the synchronous
-  // build blocks the main thread, hence the frame + timeout dance from the old start().
+  // Build the scene once the canvas exists. createEngine yields between its heavy stages, so the
+  // loading screen paints first and keeps moving; if the page goes away mid-build, the finished
+  // engine is disposed on arrival.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!candi || !canvas) return;
+    let cancelled = false;
     let engine: Engine | null = null;
-    let timer = 0;
-    const frame = requestAnimationFrame(() => {
-      timer = window.setTimeout(() => {
-        try {
-          engine = createEngine(canvas, candi, {
-            onTopic: setTopicKey,
-            onMode: setMode,
-            onWalkLock: setWalkLocked,
-            onTourSection: (i) =>
-              setTourSection(`${i + 1} / ${engine?.tourSections ?? 0} · ${engine?.tourSectionLabels[i] ?? ""}`),
-            onTourProgress: (fraction) => {
-              const pct = Math.round(fraction * 1000) / 10;
-              if (fillRef.current) fillRef.current.style.width = `${pct}%`;
-              if (barRef.current) barRef.current.setAttribute("aria-valuenow", String(Math.round(pct)));
-            },
-            onTourEnd: () => {
-              setTourPlaying(false);
-              setTourEnded(true);
-            },
-          });
-        } catch (err) {
-          setError(failMessage(err));
+    createEngine(canvas, candi, {
+      onTopic: setTopicKey,
+      onMode: setMode,
+      onWalkLock: setWalkLocked,
+      onTourSection: (i) => setTourSection(`${i + 1} / ${engine?.tourSections ?? 0} · ${engine?.tourSectionLabels[i] ?? ""}`),
+      onTourProgress: (fraction) => {
+        const pct = Math.round(fraction * 1000) / 10;
+        if (fillRef.current) fillRef.current.style.width = `${pct}%`;
+        if (barRef.current) barRef.current.setAttribute("aria-valuenow", String(Math.round(pct)));
+      },
+      onTourEnd: () => {
+        setTourPlaying(false);
+        setTourEnded(true);
+      },
+    }).then(
+      (built) => {
+        engine = built;
+        if (cancelled) {
+          built.dispose();
           return;
         }
-        engineRef.current = engine;
-        engine.setHotspotElements(hotspotRefs.current.filter((el): el is HTMLButtonElement => el !== null));
-        engine.setTime(minutes);
-        engine.setTourSpeed(speed);
+        engineRef.current = built;
+        built.setHotspotElements(hotspotRefs.current.filter((el): el is HTMLButtonElement => el !== null));
+        built.setTime(minutes);
+        built.setTourSpeed(speed);
         setReady(true);
-      }, 0);
-    });
+      },
+      (err: unknown) => {
+        if (!cancelled) setError(failMessage(err));
+      },
+    );
     return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(timer);
+      cancelled = true;
       engine?.dispose();
       engineRef.current = null;
     };
@@ -249,11 +251,7 @@ export function TemplePage({ index }: { index: number }): JSX.Element {
         </div>
       )}
 
-      {(!ready || error) && (
-        <div className="grid fixed inset-0 place-items-center bg-[#1b1916] font-heading text-xl text-[#e9e1d2]">
-          {error ?? "Laying the stones…"}
-        </div>
-      )}
+      {(!ready || error) && <LoadingScreen message={error ?? "Laying the stones…"} />}
     </div>
   );
 }

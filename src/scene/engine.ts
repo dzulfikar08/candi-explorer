@@ -62,8 +62,14 @@ export interface Engine {
   dispose(): void;
 }
 
-/** Builds the 3D scene for `candi` on `canvas`. Throws if WebGL is unavailable. */
-export function createEngine(canvas: HTMLCanvasElement, candi: CandiDefinition, events: EngineEvents): Engine {
+/** Lets the browser paint and run timers between the long synchronous build stages. */
+const breathe = () => new Promise<void>((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+
+/**
+ * Builds the 3D scene for `candi` on `canvas`, yielding between the heavy stages so the loading
+ * screen stays responsive. Rejects if WebGL is unavailable.
+ */
+export async function createEngine(canvas: HTMLCanvasElement, candi: CandiDefinition, events: EngineEvents): Promise<Engine> {
   const renderer = new WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -75,9 +81,13 @@ export function createEngine(canvas: HTMLCanvasElement, candi: CandiDefinition, 
   const scene = new Scene();
   const camera = new PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 30000);
 
-  const model: CandiModel = candi.build(createStoneTextures());
+  const textures = createStoneTextures();
+  await breathe();
+  const model: CandiModel = candi.build(textures);
   scene.add(model.group);
+  await breathe();
   const env = createEnvironment(scene, renderer, candi);
+  await breathe();
 
   const solids: Object3D[] = [...model.collidables, env.ground];
   for (const o of solids) (o as Mesh).geometry.computeBoundsTree();
