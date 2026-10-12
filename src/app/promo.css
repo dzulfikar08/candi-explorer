@@ -1,0 +1,7 @@
+/* Matches the old .promo mobile rules: on phones the card collapses to icon + name. */
+@media (max-width: 760px) {
+  [data-slot="promo"] .promo-tagline,
+  [data-slot="promo"] .promo-meta {
+    display: none;
+  }
+}

@@ -16,6 +16,21 @@ export interface Source {
   url: string;
 }
 
+/** A freely licensed photo from Wikimedia Commons, shown with its credit. */
+export interface Photo {
+  /** Commons thumbnail, about 960 px wide. */
+  src: string;
+  width: number;
+  height: number;
+  /** The file's Commons page: full size, licence and history. */
+  page: string;
+  author: string;
+  /** Short licence name as Commons gives it, e.g. "CC BY-SA 4.0". */
+  license: string;
+  /** What the photo shows; empty for a temple's lead photo, whose subject is the temple. */
+  caption?: string;
+}
+
 export interface CameraView {
   position: [number, number, number];
   target: [number, number, number];

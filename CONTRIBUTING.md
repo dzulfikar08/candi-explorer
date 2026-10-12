@@ -24,7 +24,9 @@ bun run build
 ```
 
 Then open the app and exercise what you changed: orbit, walk (mouse and keyboard), the pradaksina
-tour, and a narrow mobile viewport if you touched the UI.
+tour, and a narrow mobile viewport if you touched the UI. UI is React with the shadcn/ui components
+in `src/components/ui/` (add more with `bunx shadcn@latest add <name>`) and Tailwind classes; keep
+the 3D code in `src/scene/` and `src/render/` free of React.
 
 ## Guidelines
 
@@ -53,7 +55,9 @@ tour, and a narrow mobile viewport if you touched the UI.
 4. List your references in `sources` (title + public URL; visitors open them from the notes) and
    keep every dimension, count and date traceable to them; books without a URL go in the file
    header. Say in the notes where the model departs from the real temple.
-5. Provide hotspots, topics and a tour; check that each hotspot view frames its subject.
+5. Provide hotspots, topics and a tour; check that each hotspot view frames its subject. Optional:
+   add photos to `src/candi/photos.ts` (Wikimedia Commons only, free licences, every field from the
+   Commons API so the credit is right; a topic photo must show what that topic describes).
 6. When a temple has published counts or heights, test them (see `prambanan/layout.test.ts`).
 
 ## Commit messages

@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* shadcn/ui tokens in the site's palette: andesite ink on palm-leaf paper, laterite-orange accent. */
+:root {
+  --background: #f3ede1;
+  --foreground: #2a2520;
+  --card: #fbf8f2;
+  --card-foreground: #2a2520;
+  --popover: #fbf8f2;
+  --popover-foreground: #2a2520;
+  --primary: #b5621a;
+  --primary-foreground: #ffffff;
+  --secondary: #e6dccb;
+  --secondary-foreground: #2a2520;
+  --muted: #e6dccb;
+  --muted-foreground: #5f574d;
+  --accent: #e6dccb;
+  --accent-foreground: #2a2520;
+  --destructive: #b42318;
+  --border: #d3c7b1;
+  --input: #d3c7b1;
+  --ring: #b5621a;
+  --radius: 0.5rem;
+  /* Darker accent for text on paper (contrast ≥ 4.5:1). */
+  --primary-ink: #8f4a0f;
+  /* Map water. */
+  --sea: #d5e0dc;
+  /* Three-realm overlay swatches, matched to the 3D tints. */
+  --realm-lower: #6f8f5a;
+  --realm-middle: #c79a3c;
+  --realm-upper: #8a6fb0;
+}
+
+@theme inline {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-sea: var(--sea);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    @apply h-full bg-background font-sans text-foreground antialiased;
+  }
+  h1,
+  h2 {
+    @apply font-heading;
+  }
+}
