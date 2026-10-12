@@ -79,6 +79,8 @@ Forks should replace or remove it.
 
 `index.html` loads [Revklik](https://revklik.com) (cookieless; bots and datacenter traffic are
 excluded) for the "Candi Explorer" site. Forks should remove the script tag or use their own site id.
+The "N online · M visitors" line under the title reads Revklik's public live-widget feed
+(`src/visitors.ts`); it stays hidden if the feed is unreachable.
 
 ## Contributing
 
