@@ -109,6 +109,10 @@ export const jawi: CandiDefinition = {
     { name: "Mount Welirang", lat: -7.717, lon: 112.692, relativeHeight: 2560, kind: "volcano" },
     { name: "Mount Arjuno", lat: -7.725, lon: 112.585, relativeHeight: 2740, kind: "volcano" },
   ],
+  sources: [
+    { title: "Jawi Temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Jawi_Temple" },
+    { title: "Candi Jawi — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Jawi" },
+  ],
   orbit: { position: [-32, 18, 30], target: [0, 10, 0] },
   realms: {
     lower: "Bhurloka · foot",

@@ -141,7 +141,8 @@ export const tikus: CandiDefinition = {
   id: "tikus",
   name: "Tikus",
   location: "Mojokerto, Jawa Timur",
-  site: { lat: -7.3424, lon: 112.3807 },
+  // Wikidata Q11125169 / OpenStreetMap.
+  site: { lat: -7.5717, lon: 112.4035 },
   overviewTopic: "overview",
   topics,
   hotspots: [
@@ -153,6 +154,10 @@ export const tikus: CandiDefinition = {
     { name: "Penanggungan", lat: -7.617, lon: 112.681, relativeHeight: 1620, kind: "volcano" },
     { name: "Arjuno", lat: -7.705, lon: 112.476, relativeHeight: 3310, kind: "volcano" },
     { name: "Welirang", lat: -7.725, lon: 112.58, relativeHeight: 3120, kind: "volcano" },
+  ],
+  sources: [
+    { title: "Candi Tikus — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Tikus" },
+    { title: "Trowulan — Wikipedia", url: "https://en.wikipedia.org/wiki/Trowulan" },
   ],
   orbit: { position: [-30, 14, 22], target: [0, -2.5, 0] },
   realms: {

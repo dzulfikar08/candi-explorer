@@ -228,6 +228,14 @@ export const dieng: CandiDefinition = {
     { name: "Gunung Sindoro", lat: -7.3011, lon: 109.9967, relativeHeight: 1060, kind: "volcano" },
     { name: "Gunung Sumbing", lat: -7.385, lon: 110.0725, relativeHeight: 1278, kind: "volcano" },
   ],
+  sources: [
+    { title: "Dieng temples — Wikipedia", url: "https://en.wikipedia.org/wiki/Dieng_temples" },
+    { title: "Kompleks Candi Dieng — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Kompleks_Candi_Dieng" },
+    {
+      title: "Kompleks Candi Arjuna, Kompleks Candi Terbesar di Dieng — Indonesia Kaya",
+      url: "https://indonesiakaya.com/pustaka-indonesia/kompleks-candi-arjuna-kompleks-candi-terbesar-di-dieng/",
+    },
+  ],
   orbit: { position: [30, 13, 36], target: [-2, 3, 10] },
   realms: {
     lower: "Bhurloka · foot",

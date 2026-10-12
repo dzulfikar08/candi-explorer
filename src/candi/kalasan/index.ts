@@ -62,6 +62,10 @@ export const kalasan: CandiDefinition = {
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2990, kind: "volcano" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 450, kind: "ridge" },
   ],
+  sources: [
+    { title: "Kalasan — Wikipedia", url: "https://en.wikipedia.org/wiki/Kalasan" },
+    { title: "Candi Kalasan — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Kalasan" },
+  ],
   orbit: { position: [52, 26, 38], target: [0, 9, 0] },
   realms: {
     lower: "Kamadhatu · foot",

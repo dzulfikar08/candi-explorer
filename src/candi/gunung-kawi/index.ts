@@ -127,6 +127,12 @@ export const gunungKawi: CandiDefinition = {
     { name: "Batur", lat: -8.2422, lon: 115.3752, relativeHeight: 1570, kind: "volcano" },
     { name: "Agung", lat: -8.3435, lon: 115.5071, relativeHeight: 2880, kind: "volcano" },
   ],
+  sources: [
+    { title: "Gunung Kawi — Wikipedia", url: "https://en.wikipedia.org/wiki/Gunung_Kawi" },
+    { title: "Bali's Candi Gunung Kawi Temple: Ancient Valley of Kings — Indonesia Travel", url: "https://www.indonesia.travel/us/en/destination/bali-nusa-tenggara/bali/bali---gunung-kawi-temple" },
+    { title: "Pura Gunung Kawi — Ancient Bali", url: "https://ancientbali.com/pura-gunung-kawi/" },
+    { title: "Gunung Kawi: A Window into Ancient Bali — NOW! Bali", url: "https://www.nowbali.co.id/shrines-gunung-kawi" },
+  ],
   // Home view from mid-gorge, looking north-east at the row of five eastern facades.
   orbit: { position: [0, 9, 8], target: [10.5, 4, -15] },
   realms: {

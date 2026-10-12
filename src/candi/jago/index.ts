@@ -138,6 +138,15 @@ export const jago: CandiDefinition = {
     { name: "Kawi", lat: -7.9229, lon: 112.4522, relativeHeight: 2038, kind: "volcano" },
     { name: "Kelud", lat: -7.93, lon: 112.308, relativeHeight: 1118, kind: "volcano" },
   ],
+  sources: [
+    { title: "Jago Temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Jago_Temple" },
+    { title: "Candi Jago — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Jago" },
+    {
+      title: "Sejarah Candi Jago: Corak Agama, Peninggalan Kerajaan, & Relief — Tirto.id",
+      url: "https://tirto.id/sejarah-candi-jago-corak-agama-peninggalan-kerajaan-relief-gCdw",
+    },
+    { title: "Candi Kidal — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Kidal" },
+  ],
   orbit: { position: [-27, 26, 25], target: [0, 6, 0] },
   realms: {
     lower: "Kamadhatu · relief terraces",

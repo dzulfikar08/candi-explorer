@@ -8,6 +8,14 @@ export interface Topic {
   facts?: [label: string, value: string][];
 }
 
+/** A published reference the temple's dimensions, dates and notes come from. */
+export interface Source {
+  /** Short human title, e.g. "Prambanan — Wikipedia (English)". */
+  title: string;
+  /** Public URL, opened in a new tab. */
+  url: string;
+}
+
 export interface CameraView {
   position: [number, number, number];
   target: [number, number, number];
@@ -64,6 +72,8 @@ export interface CandiDefinition {
   topics: Record<string, Topic>;
   hotspots: Hotspot[];
   horizon: HorizonFeature[];
+  /** References for the facts in `topics`, listed under the notes; at least one. */
+  sources: Source[];
   orbit: CameraView;
   /** Legend for the three-realm overlay, bottom zone first. */
   realms: Record<Realm, string>;

@@ -124,6 +124,10 @@ export const sukuh: CandiDefinition = {
     { name: "Sumbing", lat: -7.384, lon: 110.07, relativeHeight: 2460, kind: "volcano" },
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 2226, kind: "volcano" },
   ],
+  sources: [
+    { title: "Sukuh — Wikipedia", url: "https://en.wikipedia.org/wiki/Sukuh" },
+    { title: "Candi Sukuh — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Sukuh" },
+  ],
   orbit: { position: [-45, 30, 46], target: [10, 4, 0] },
   realms: {
     lower: "Bhurloka · foot",

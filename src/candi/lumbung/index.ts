@@ -185,6 +185,11 @@ export const lumbung: CandiDefinition = {
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2990, kind: "volcano" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 450, kind: "ridge" },
   ],
+  sources: [
+    { title: "Candi Lumbung — Wikipedia", url: "https://en.wikipedia.org/wiki/Candi_Lumbung" },
+    { title: "Candi Lumbung — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Lumbung" },
+    { title: "Prambanan Temple Compounds — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/642/" },
+  ],
   orbit: { position: [72, 40, 70], target: [0, 7, -12] },
   realms: {
     lower: "Kamadhatu · foot",

@@ -85,6 +85,10 @@ export const brahu: CandiDefinition = {
     { name: "Welirang", lat: -7.691, lon: 112.477, relativeHeight: 3126, kind: "volcano" },
     { name: "Arjuno", lat: -7.725, lon: 112.576, relativeHeight: 3309, kind: "volcano" },
   ],
+  sources: [
+    { title: "Candi Brahu — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Brahu" },
+    { title: "Situs Trowulan Majapahit (1): Candi Brahu — Buddhazine", url: "https://buddhazine.com/situs-trowulan-majapahit-1-candi-brahu/" },
+  ],
   orbit: { position: [-26, 18, 17], target: [0, 9, 0] },
   realms: {
     lower: "Kamadhatu · foot",

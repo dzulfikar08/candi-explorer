@@ -79,6 +79,10 @@ export const mendut: CandiDefinition = {
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 2870, kind: "volcano" },
     { name: "Menoreh Hills", lat: -7.7, lon: 110.15, relativeHeight: 650, kind: "ridge" },
   ],
+  sources: [
+    { title: "Mendut — Wikipedia", url: "https://en.wikipedia.org/wiki/Mendut" },
+    { title: "Candi Mendut — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Mendut" },
+  ],
   orbit: { position: [-40, 22, 34], target: [0, 9, 0] },
   realms: {
     lower: "Kamadhatu · base",

@@ -99,6 +99,10 @@ export const bahal: CandiDefinition = {
     { name: "Sibualbuali", lat: 1.556, lon: 99.255, relativeHeight: 1750, kind: "volcano" },
     { name: "Sorikmarapi", lat: 0.684, lon: 99.543, relativeHeight: 2080, kind: "volcano" },
   ],
+  sources: [
+    { title: "Bahal temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Bahal_temple" },
+    { title: "Candi Bahal — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Bahal" },
+  ],
   // Home view from the gate/stair side, offset ~35° south, low enough to read stair and temple.
   orbit: { position: [33, 22, 24], target: [0, 5, 0] },
   realms: {

@@ -100,6 +100,15 @@ export const wringinLawang: CandiDefinition = {
     { name: "Bromo", lat: -7.9425, lon: 112.95, relativeHeight: 2284, kind: "volcano" },
     { name: "Semeru", lat: -8.1086, lon: 112.922, relativeHeight: 3631, kind: "volcano" },
   ],
+  sources: [
+    { title: "Trowulan — Wikipedia", url: "https://en.wikipedia.org/wiki/Trowulan" },
+    { title: "Gapura Wringinlawang — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Gapura_Wringinlawang" },
+    { title: "Candi bentar — Wikipedia", url: "https://en.wikipedia.org/wiki/Candi_bentar" },
+    {
+      title: "Trowulan – Former Capital City of Majapahit Kingdom — UNESCO World Heritage Centre",
+      url: "https://whc.unesco.org/en/tentativelists/5466",
+    },
+  ],
   orbit: { position: [-18, 15, 15], target: [0, 7.5, 0] },
   realms: {
     lower: "Bhurloka · foot",

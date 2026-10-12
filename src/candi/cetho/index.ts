@@ -109,6 +109,14 @@ export const cetho: CandiDefinition = {
     { name: "Sumbing", lat: -7.384, lon: 110.07, relativeHeight: 1870, kind: "volcano" },
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 1640, kind: "volcano" },
   ],
+  sources: [
+    { title: "Candi Ceto — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Ceto" },
+    { title: "Ceto Temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Ceto_Temple" },
+    {
+      title: "Candi Cetho, Candi Peruwatan Agama Hindu — Indonesia Kaya",
+      url: "https://indonesiakaya.com/pustaka-indonesia/candi-cetho-candi-peruwatan-agama-hindu/",
+    },
+  ],
   orbit: { position: [-140, 100, 100], target: [0, 10, 0] },
   realms: {
     lower: "Bhurloka · foot",

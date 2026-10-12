@@ -125,6 +125,11 @@ export const batujaya: CandiDefinition = {
     { name: "Gunung Pangrango", lat: -6.776, lon: 106.982, relativeHeight: 2951, kind: "volcano" },
     { name: "Gunung Sanggabuana", lat: -6.533, lon: 107.367, relativeHeight: 1284, kind: "ridge" },
   ],
+  sources: [
+    { title: "Batujaya — Wikipedia", url: "https://en.wikipedia.org/wiki/Batujaya" },
+    { title: "Percandian Batujaya — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Percandian_Batujaya" },
+    { title: "Batujaya Candi Sites, Karawang, West Java — Photo Dharma", url: "https://photodharma.net/Indonesia/27-Batujaya-Sites/index.htm" },
+  ],
   // The pair is ~200 m apart and low, too far to frame together: open on Blandongan from the
   // north-west with Jiwa visible down the axis behind it.
   orbit: { position: [-92, 18, -110], target: [-62, 1.6, -74] },

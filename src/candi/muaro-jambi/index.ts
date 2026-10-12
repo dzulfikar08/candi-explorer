@@ -150,6 +150,11 @@ export const muaroJambi: CandiDefinition = {
     { name: "Kerinci", lat: -1.697, lon: 101.264, relativeHeight: 3800, kind: "volcano" },
     { name: "Masurai", lat: -2.129, lon: 101.862, relativeHeight: 2750, kind: "volcano" },
   ],
+  sources: [
+    { title: "Muaro Jambi Temple Compounds — Wikipedia", url: "https://en.wikipedia.org/wiki/Muaro_Jambi_Temple_Compounds" },
+    { title: "Muarajambi Temple Compound — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/tentativelists/6827/" },
+    { title: "Muara Jambi, Sumatra — Photo Dharma", url: "https://photodharma.net/Indonesia/32-Muara-Jambi/index.htm" },
+  ],
   orbit: { position: [46, 36, 42], target: [0, 6, 0] },
   realms: {
     lower: "Kamadhatu · base",

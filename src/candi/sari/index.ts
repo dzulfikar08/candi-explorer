@@ -62,6 +62,10 @@ export const sari: CandiDefinition = {
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2990, kind: "volcano" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 450, kind: "ridge" },
   ],
+  sources: [
+    { title: "Sari temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Sari_temple" },
+    { title: "Candi Sari — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Sari" },
+  ],
   orbit: { position: [36, 16, 30], target: [0, 7, 0] },
   realms: {
     lower: "Kamadhatu · foot",

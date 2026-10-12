@@ -101,6 +101,11 @@ export const cangkuang: CandiDefinition = {
     { name: "Gunung Haruman", lat: -7.066, lon: 107.9, relativeHeight: 558, kind: "volcano" },
     { name: "Gunung Kaledong", lat: -7.026, lon: 107.946, relativeHeight: 589, kind: "volcano" },
   ],
+  sources: [
+    { title: "Cangkuang — Wikipedia", url: "https://en.wikipedia.org/wiki/Cangkuang" },
+    { title: "Candi Cangkuang — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Cangkuang" },
+    { title: "Candi Cangkuang — Explore Sunda", url: "https://www.exploresunda.com/cangkuang.html" },
+  ],
   orbit: { position: [-30, 16, 26], target: [0, 6, 0] },
   realms: {
     lower: "Bhurloka · foot",

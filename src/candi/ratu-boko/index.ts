@@ -125,6 +125,10 @@ export const ratuBoko: CandiDefinition = {
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2950, kind: "volcano" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 300, kind: "ridge" },
   ],
+  sources: [
+    { title: "Ratu Boko — Wikipedia", url: "https://en.wikipedia.org/wiki/Ratu_Boko" },
+    { title: "Situs Ratu Boko — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Situs_Ratu_Boko" },
+  ],
   orbit: { position: [-138, 68, 60], target: [-33, 8, 0] },
   realms: {
     lower: "Bhurloka · foot — terraces, walls and pools",

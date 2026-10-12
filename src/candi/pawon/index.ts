@@ -107,6 +107,11 @@ export const pawon: CandiDefinition = {
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 2876, kind: "volcano" },
     { name: "Menoreh Hills", lat: -7.7, lon: 110.15, relativeHeight: 640, kind: "ridge" },
   ],
+  sources: [
+    { title: "Pawon — Wikipedia", url: "https://en.wikipedia.org/wiki/Pawon" },
+    { title: "Candi Pawon — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Pawon" },
+    { title: "Borobudur Temple Compounds — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/592/" },
+  ],
   orbit: { position: [-34, 16, 24], target: [0, 6.5, 0] },
   realms: {
     lower: "Kamadhatu · foot",

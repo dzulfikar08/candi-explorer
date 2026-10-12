@@ -11,41 +11,63 @@
     <meta name="theme-color" content="#b5621a" />
     <!-- Revklik analytics (site "Candi Explorer"). Forks: remove or use your own site id. -->
     <script defer data-site-id="8a6321fd-e7f7-4fe7-8d6c-635177894e9a" src="https://app.revklik.com/klikapa.js"></script>
-    <title>Candi Explorer · Borobudur</title>
+    <title>Candi Explorer · Temples of Indonesia in 3D</title>
   </head>
   <body>
+    <main id="atlas" class="atlas" hidden></main>
+
     <canvas id="scene" role="img" aria-label="3D view of the temple"></canvas>
 
     <div class="corner">
       <header class="brand">
-        <p class="brand-app">Candi Explorer</p>
+        <a id="back-to-map" class="back-link" href="/">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          All temples
+        </a>
         <h1 id="candi-name">Candi</h1>
         <p id="candi-location" class="brand-location"></p>
-        <label class="candi-picker">
-          <span class="visually-hidden">Choose a temple</span>
-          <select id="candi-picker"></select>
-        </label>
-        <p id="visitors" class="brand-visitors" hidden></p>
-        <p class="brand-credit">
-          Made by <a href="https://joyodigitama.com" target="_blank" rel="noopener">JoyoDigitama</a> ·
-          <a href="https://github.com/dzulfikar08/candi-explorer" target="_blank" rel="noopener">Source</a>
-        </p>
+        <div class="switcher">
+          <a id="candi-prev" class="tool icon-button" href="/">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <div id="candi-picker" class="candi-picker"></div>
+          <a id="candi-next" class="tool icon-button" href="/">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </div>
       </header>
       <aside id="promo" class="promo" aria-label="More from the makers"></aside>
     </div>
 
     <div id="hotspots" class="hotspots" role="group" aria-label="Points of interest"></div>
 
-    <aside id="info" class="info" aria-live="polite">
-      <button id="info-toggle" class="info-toggle" type="button" aria-expanded="true" aria-controls="info-content">
-        Hide notes
-      </button>
-      <div id="info-content" class="info-content">
+    <aside id="info" class="info" aria-label="Notes">
+      <div class="info-head">
         <p id="info-kicker" class="info-kicker"></p>
-        <h2 id="info-title"></h2>
-        <div id="info-body" class="info-body"></div>
-        <dl id="info-facts" class="info-facts"></dl>
-        <button id="info-overview" class="link-button" type="button" hidden>Back to overview</button>
+        <button id="info-toggle" class="info-toggle" type="button" aria-expanded="true" aria-controls="info-content">Hide notes</button>
+      </div>
+      <div id="info-content" class="info-content">
+        <div aria-live="polite">
+          <h2 id="info-title"></h2>
+          <div id="info-body" class="info-body"></div>
+          <dl id="info-facts" class="info-facts"></dl>
+          <button id="info-overview" class="link-button" type="button" hidden>Back to overview</button>
+        </div>
+        <section class="info-section">
+          <h3>Places to look at</h3>
+          <ol id="info-places" class="info-places"></ol>
+        </section>
+        <section class="info-section">
+          <h3>Sources</h3>
+          <ul id="info-sources" class="info-sources"></ul>
+        </section>
+        <footer class="info-foot">
+          <p id="visitors" class="brand-visitors" hidden></p>
+          <p class="brand-credit">
+            Made by <a href="https://joyodigitama.com" target="_blank" rel="noopener">JoyoDigitama</a> ·
+            <a href="https://github.com/dzulfikar08/candi-explorer" target="_blank" rel="noopener">Source code</a>
+          </p>
+        </footer>
       </div>
     </aside>
 

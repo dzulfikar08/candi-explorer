@@ -82,6 +82,10 @@ export const sambisari: CandiDefinition = {
     { name: "Merapi", lat: -7.5407, lon: 110.4457, relativeHeight: 2750, kind: "volcano" },
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2980, kind: "volcano" },
   ],
+  sources: [
+    { title: "Sambisari — Wikipedia", url: "https://en.wikipedia.org/wiki/Sambisari" },
+    { title: "Candi Sambisari — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Sambisari" },
+  ],
   orbit: { position: [-62, 30, 48], target: [0, -4, 0] },
   realms: {
     lower: "Bhurloka · foot",

@@ -197,6 +197,10 @@ export const ijo: CandiDefinition = {
     // The Gunungkidul limestone hills stand ≈ 600 m asl, barely above the temple's own 410 m.
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 190, kind: "ridge" },
   ],
+  sources: [
+    { title: "Ijo Temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Ijo_Temple" },
+    { title: "Candi Ijo — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Ijo" },
+  ],
   orbit: { position: [0, 65, 40], target: [75, 20, 0] },
   realms: {
     lower: "Bhurloka · foot",

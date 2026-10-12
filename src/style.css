@@ -82,17 +82,33 @@ input {
 }
 
 .brand {
-  padding: 10px 16px 12px;
-  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  padding: 12px 14px 14px 16px;
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  pointer-events: none;
 }
 
 .brand-app {
   margin: 0;
   color: var(--accent-ink);
   font-size: 13px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 6px -2px;
+  padding: 2px 4px 2px 2px;
+  border-radius: 4px;
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  background: var(--muted);
 }
 
 .brand h1 {
@@ -106,19 +122,134 @@ input {
   font-size: 13px;
 }
 
+/* Previous / picker / next: browse temples in map-list order without leaving the 3D view. */
+.switcher {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+
 .candi-picker {
-  display: block;
-  margin-top: 8px;
-  pointer-events: auto;
+  flex: 1;
+  min-width: 0;
 }
 
-.candi-picker .select,
-.candi-picker .select-trigger {
+/* Searchable temple picker (src/ui/temple-search.ts): looks like the Select trigger, types like a field. */
+.temple-search {
+  position: relative;
+}
+
+.temple-search-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  translate: 0 -50%;
+  display: flex;
+  color: var(--ink-muted);
+  pointer-events: none;
+}
+
+.temple-search input,
+.search-field {
   width: 100%;
+  height: var(--control-h);
+  padding: 0 10px 0 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-strong);
+  box-shadow: var(--shadow-xs);
+  font-size: 14px;
+  transition: box-shadow 150ms;
 }
 
-.candi-picker .select-content {
-  max-height: min(420px, 60vh);
+.temple-search input:focus-visible,
+.search-field:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.temple-search-list {
+  width: max(100%, 260px);
+  max-height: min(340px, 60vh);
+}
+
+.temple-search-group {
+  margin: 6px 8px 2px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.temple-search-name {
+  display: block;
+}
+
+.temple-search-location {
+  display: block;
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.temple-search-empty {
+  margin: 0;
+  padding: 10px 8px;
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+.atlas-search {
+  margin-top: 14px;
+}
+
+.atlas-empty {
+  margin: 0;
+  padding: 6px 22px 16px;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.tool.icon-button {
+  flex: none;
+  width: var(--control-h);
+  padding: 0;
+  border-color: var(--line);
+  background: var(--paper-strong);
+  box-shadow: var(--shadow-xs);
+  color: var(--ink);
+}
+
+.tool.icon-button:hover {
+  background: var(--muted);
+}
+
+/* Tactile press on every button-like control. */
+.tool:active,
+.button-primary:active,
+.select-trigger:active {
+  scale: 0.96;
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--control-h);
+  padding: 0 14px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-xs);
+  transition:
+    background-color 150ms,
+    scale 150ms;
+}
+
+.button-primary:hover {
+  background: var(--accent-ink);
 }
 
 .visually-hidden {
@@ -238,11 +369,19 @@ body[data-mode="walk"] .promo {
   border-radius: var(--radius);
 }
 
+.info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 4px 20px;
+}
+
 .info-toggle {
-  align-self: flex-end;
-  margin: 8px 10px 0 0;
+  flex: none;
   padding: 4px 8px;
   border: 0;
+  border-radius: 4px;
   background: none;
   color: var(--ink-muted);
   font-size: 13px;
@@ -250,22 +389,113 @@ body[data-mode="walk"] .promo {
 }
 
 .info-toggle:hover {
+  background: var(--muted);
   color: var(--ink);
 }
 
 .info-content {
   overflow-y: auto;
-  padding: 0 22px 20px;
+  padding: 0 20px 16px;
 }
 
 .info.collapsed .info-content {
   display: none;
 }
 
+.info.collapsed .info-head {
+  padding-bottom: 10px;
+}
+
 .info-kicker {
   margin: 0;
   color: var(--accent-ink);
   font-size: 13px;
+}
+
+.info-section {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.info-section h3 {
+  margin: 0 0 6px;
+  font: 600 15px/1.3 var(--serif);
+}
+
+.info-places,
+.info-sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Same numbers as the markers in the scene. */
+.info-place {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 5px 8px 5px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.info-place:hover {
+  background: var(--muted);
+}
+
+.info-place[aria-current] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent-ink);
+}
+
+.info-place-number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.info-sources {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.info-sources a {
+  color: var(--ink);
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.info-sources a:hover {
+  color: var(--accent-ink);
+  text-decoration-color: currentColor;
+}
+
+.info-sources svg {
+  margin-left: 4px;
+  vertical-align: -1px;
+  opacity: 0.6;
+}
+
+.info-foot {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
 }
 
 .info h2 {
@@ -728,6 +958,390 @@ body[data-mode="walk"] .promo {
   margin: 0;
 }
 
+/* Map of Indonesia (the home page). Only the atlas shows in this view. */
+body[data-view="map"] > :not(#atlas, script) {
+  display: none !important;
+}
+
+.atlas {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  background: var(--paper);
+}
+
+.atlas-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--line);
+}
+
+.atlas-head {
+  padding: 22px 22px 14px;
+}
+
+.atlas-head h1 {
+  margin: 2px 0 8px;
+  font: 600 30px/1.1 var(--serif);
+}
+
+.atlas-intro {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.atlas-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 12px 12px;
+}
+
+.atlas-region ul {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+/* Region headings zoom the map to the region; they stay visible while its list scrolls. */
+.atlas-region-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 10px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  font: 600 15px/1.3 var(--serif);
+  text-align: left;
+  cursor: pointer;
+}
+
+.atlas-region-head:hover {
+  color: var(--accent-ink);
+}
+
+.atlas-count {
+  color: var(--ink-muted);
+  font: 500 12px var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.atlas-item {
+  display: grid;
+  width: 100%;
+  margin-top: 2px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.atlas-item:hover {
+  background: var(--muted);
+}
+
+.atlas-item[aria-current] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.atlas-item-name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.atlas-item[aria-current] .atlas-item-name {
+  color: var(--accent-ink);
+}
+
+.atlas-item-location {
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.atlas-foot {
+  display: grid;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.atlas-foot .brand-visitors,
+.atlas-foot .brand-credit {
+  margin: 0;
+}
+
+.atlas-map {
+  position: relative;
+  overflow: hidden;
+  background: #d5e0dc;
+  cursor: grab;
+  touch-action: none;
+}
+
+.atlas-map:active {
+  cursor: grabbing;
+}
+
+.atlas-map:focus-visible {
+  outline-offset: -3px;
+}
+
+.atlas-map svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.land-indonesia {
+  fill: #f1e6cd;
+  stroke: #a6967a;
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.land-neighbour {
+  fill: #e4ded1;
+  stroke: #bcb3a2;
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.atlas-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.atlas-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Each marker's dot is centred on the temple; the label hangs to its right. */
+.atlas-dot {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 1px 3px rgb(42 37 32 / 0.35);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: scale 150ms;
+}
+
+.cluster .atlas-dot {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+}
+
+.atlas-label {
+  margin-top: -1px;
+  translate: 0 -50%;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--paper-strong) 92%, transparent);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: var(--shadow-xs);
+}
+
+.atlas-marker.label-hidden .atlas-label {
+  visibility: hidden;
+}
+
+.atlas-marker:hover,
+.atlas-marker:focus-visible {
+  z-index: 1;
+}
+
+.atlas-marker.label-hidden:hover .atlas-label,
+.atlas-marker.label-hidden:focus-visible .atlas-label {
+  visibility: visible;
+}
+
+.atlas-marker:hover .atlas-dot,
+.atlas-marker.hover .atlas-dot,
+.atlas-marker:focus-visible .atlas-dot {
+  scale: 1.25;
+}
+
+.atlas-marker.selected .atlas-dot {
+  scale: 1.35;
+  background: var(--accent-ink);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.atlas-marker.selected .atlas-label,
+.atlas-marker.hover .atlas-label {
+  background: var(--ink);
+  color: var(--paper-strong);
+}
+
+.atlas-zoom {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.atlas-zoom .tool {
+  min-width: var(--control-h);
+  padding: 0 10px;
+  border-color: var(--line);
+  background: var(--paper-strong);
+  box-shadow: var(--shadow-xs);
+}
+
+.atlas-zoom .tool:hover {
+  background: var(--muted);
+}
+
+.atlas-card {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: min(320px, calc(100% - 40px));
+  padding: 14px 16px 16px;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  /* The one raised surface on the map: it belongs to the selection, above the land. */
+  box-shadow: 0 8px 24px rgb(42 37 32 / 0.18);
+  cursor: auto;
+}
+
+.atlas-card-region {
+  margin: 0;
+  color: var(--accent-ink);
+  font-size: 13px;
+}
+
+.atlas-card h2 {
+  margin: 2px 0 2px;
+  font: 600 24px/1.15 var(--serif);
+}
+
+.atlas-card-location {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.atlas-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+@media (max-width: 760px) {
+  .atlas {
+    grid-template-columns: 1fr;
+    grid-template-rows: 52svh 1fr;
+  }
+
+  .atlas-map {
+    grid-row: 1;
+  }
+
+  /* One scroll for the whole sheet: a pinned footer would leave room for two list rows. */
+  .atlas-panel {
+    grid-row: 2;
+    display: block;
+    overflow-y: auto;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .atlas-list {
+    overflow: visible;
+  }
+
+  .atlas-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 12px 16px 10px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .atlas-head .brand-app {
+    display: none;
+  }
+
+  .atlas-head h1 {
+    margin: 0;
+    font-size: 22px;
+  }
+
+  .atlas-search {
+    margin-top: 8px;
+  }
+
+  /* 16px stops iOS zooming into the field on focus. */
+  .search-field,
+  .temple-search input {
+    font-size: 16px;
+  }
+
+  /* The search header is the sticky part on phones; region headings scroll with their lists. */
+  .atlas-region-head {
+    position: static;
+  }
+
+  .atlas-item {
+    padding: 9px 10px;
+  }
+
+  .atlas-intro {
+    display: none;
+  }
+
+  .atlas-zoom {
+    top: 12px;
+    right: 12px;
+  }
+
+  .atlas-card {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+}
+
 .loading {
   position: fixed;
   inset: 0;
@@ -739,8 +1353,40 @@ body[data-mode="walk"] .promo {
 }
 
 @media (max-width: 760px) {
+  .brand {
+    padding: 10px 12px 12px;
+  }
+
+  .back-link {
+    margin-bottom: 2px;
+  }
+
   .brand h1 {
-    font-size: 26px;
+    font-size: 22px;
+  }
+
+  .brand-location {
+    display: none;
+  }
+
+  .switcher {
+    margin-top: 8px;
+  }
+
+  .tool.icon-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .temple-search input {
+    height: 40px;
+  }
+
+  /* Folded notes: one line, so the bar stays a bar. */
+  .info.collapsed .info-kicker {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .info {

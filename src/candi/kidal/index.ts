@@ -111,6 +111,14 @@ export const kidal: CandiDefinition = {
     { name: "Bromo", lat: -7.942, lon: 112.95, relativeHeight: 1810, kind: "volcano" },
     { name: "Semeru", lat: -8.108, lon: 112.922, relativeHeight: 3160, kind: "volcano" },
   ],
+  sources: [
+    { title: "Kidal Temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Kidal_Temple" },
+    { title: "Candi Kidal — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Kidal" },
+    {
+      title: "Candi Kidal and Jago: Monuments to the God-Kings — southeastasiankingdoms",
+      url: "https://southeastasiankingdoms.wordpress.com/2014/08/22/candi-kidal-and-jago-monuments-to-the-god-kings",
+    },
+  ],
   orbit: { position: [-26, 11, 22], target: [0, 6, 0] },
   realms: {
     lower: "Bhurloka · foot",

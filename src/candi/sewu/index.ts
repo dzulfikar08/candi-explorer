@@ -154,6 +154,11 @@ export const sewu: CandiDefinition = {
     { name: "Merbabu", lat: -7.455, lon: 110.44, relativeHeight: 2990, kind: "volcano" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 450, kind: "ridge" },
   ],
+  sources: [
+    { title: "Sewu — Wikipedia", url: "https://en.wikipedia.org/wiki/Sewu" },
+    { title: "Candi Sewu — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Sewu" },
+    { title: "Prambanan Temple Compounds — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/642/" },
+  ],
   orbit: { position: [150, 80, 110], target: [0, 8, 0] },
   realms: {
     lower: "Kamadhatu · foot",

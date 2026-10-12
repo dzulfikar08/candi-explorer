@@ -106,6 +106,10 @@ export const plaosan: CandiDefinition = {
     { name: "Gunungkidul hills", lat: -7.9, lon: 110.52, relativeHeight: 450, kind: "ridge" },
     { name: "Bukit Ijo", lat: -7.8926, lon: 110.5024, relativeHeight: 210, kind: "ridge" },
   ],
+  sources: [
+    { title: "Plaosan — Wikipedia", url: "https://en.wikipedia.org/wiki/Plaosan" },
+    { title: "Candi Plaosan — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Plaosan" },
+  ],
   orbit: { position: [-105, 70, 135], target: [0, 7, 48] },
   realms: {
     lower: "Kamadhatu · foot",

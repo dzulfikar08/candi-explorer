@@ -136,6 +136,11 @@ export const penataran: CandiDefinition = {
     { name: "Arjuno-Welirang", lat: -7.717, lon: 112.575, relativeHeight: 2949, kind: "volcano" },
     { name: "Semeru", lat: -8.108, lon: 112.925, relativeHeight: 3226, kind: "volcano" },
   ],
+  sources: [
+    { title: "Candi Penataran — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Penataran" },
+    { title: "Penataran — Wikipedia", url: "https://en.wikipedia.org/wiki/Penataran" },
+    { title: "Candi Penataran — Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/Category:Candi_Penataran" },
+  ],
   orbit: { position: [20, 22, 30], target: [48, 2.5, 0] },
   realms: {
     lower: "Bhurloka · foot",

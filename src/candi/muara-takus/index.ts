@@ -156,6 +156,11 @@ export const muaraTakus: CandiDefinition = {
     { name: "Bukit Gantinggadang", lat: 0.1379, lon: 100.6913, relativeHeight: 206, kind: "ridge" },
     { name: "Gunung Targampo", lat: 0.0156, lon: 100.5868, relativeHeight: 1005, kind: "ridge" },
   ],
+  sources: [
+    { title: "Muara Takus — Wikipedia", url: "https://en.wikipedia.org/wiki/Muara_Takus" },
+    { title: "Candi Muara Takus — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Muara_Takus" },
+    { title: "Muara Takus Compound Site — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/tentativelists/5464/" },
+  ],
   orbit: { position: [36, 38, 42], target: [0, 8, 0] },
   realms: {
     lower: "Kamadhatu · foot, plinths and enclosure wall",

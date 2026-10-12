@@ -12,8 +12,8 @@ import { buildBajangRatu } from "./model";
  * Ratu" first in the Oundheitkundig Verslag of 1915; restoration inaugurated 1992), Kepustakaan
  * Candi / Perpustakaan Nasional RI "Candi Bajangratu" (orientation east–west through the passage;
  * body 6.74 m long; tiered roof ending in a square peak), and English Wikipedia "Paduraksa" (the
- * oldest paduraksa still standing, mid-14th century). Coordinates from the site's Wikidata record
- * (7°22′53″S 112°21′44″E).
+ * oldest paduraksa still standing, mid-14th century). Coordinates from Wikidata Q11112539
+ * (7°34′04″S 112°23′56″E), matching OpenStreetMap.
  *
  * Simplifications: the gate is approached from the west (the passage runs east–west and the real
  * orientation is northeast–southwest, snapped to the cardinal here); the roof reliefs are carried by
@@ -71,7 +71,8 @@ export const bajangRatu: CandiDefinition = {
   id: "bajang-ratu",
   name: "Bajang Ratu",
   location: "Mojokerto, Jawa Timur",
-  site: { lat: -7.3814, lon: 112.3622 },
+  // Wikidata Q11112539 / OpenStreetMap.
+  site: { lat: -7.5677, lon: 112.3988 },
   overviewTopic: "overview",
   topics,
   hotspots: [
@@ -88,6 +89,10 @@ export const bajangRatu: CandiDefinition = {
     { name: "Anjasmoro", lat: -7.621, lon: 112.281, relativeHeight: 2236, kind: "volcano" },
     { name: "Welirang", lat: -7.691, lon: 112.477, relativeHeight: 3115, kind: "volcano" },
     { name: "Arjuno", lat: -7.725, lon: 112.576, relativeHeight: 3298, kind: "volcano" },
+  ],
+  sources: [
+    { title: "Gapura Bajang Ratu — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Gapura_Bajang_Ratu" },
+    { title: "Paduraksa — Wikipedia", url: "https://en.wikipedia.org/wiki/Paduraksa" },
   ],
   orbit: { position: [-16, 14, 14], target: [0, 8, 0] },
   realms: {

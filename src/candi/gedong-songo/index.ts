@@ -199,6 +199,10 @@ export const gedongSongo: CandiDefinition = {
     { name: "Gunung Sindoro", lat: -7.3011, lon: 109.9967, relativeHeight: 1903, kind: "volcano" },
     { name: "Gunung Sumbing", lat: -7.385, lon: 110.0725, relativeHeight: 2121, kind: "volcano" },
   ],
+  sources: [
+    { title: "Gedong Songo — Wikipedia", url: "https://en.wikipedia.org/wiki/Gedong_Songo" },
+    { title: "Candi Gedong Songo — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Gedong_Songo" },
+  ],
   orbit: { position: [-110, 105, 60], target: [0, 7, -70] },
   realms: {
     lower: "Bhurloka · foot",

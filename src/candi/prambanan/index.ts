@@ -168,6 +168,12 @@ export const prambanan: CandiDefinition = {
     { name: "Ratu Boko plateau", lat: -7.77, lon: 110.489, relativeHeight: 60, kind: "ridge" },
     { name: "Gunungkidul hills", lat: -7.83, lon: 110.55, relativeHeight: 450, kind: "ridge" },
   ],
+  sources: [
+    { title: "Prambanan — Wikipedia", url: "https://en.wikipedia.org/wiki/Prambanan" },
+    { title: "Rara Jonggrang — Wikipedia", url: "https://en.wikipedia.org/wiki/Rara_Jonggrang" },
+    { title: "Candi Prambanan — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Prambanan" },
+    { title: "Prambanan Temple Compounds — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/642/" },
+  ],
   orbit: { position: [170, 85, 120], target: [0, 14, 0] },
   realms: {
     lower: "Bhurloka · foot, the world of mortals",

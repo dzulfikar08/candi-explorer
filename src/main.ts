@@ -15,7 +15,7 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { acceleratedRaycast, computeBoundsTree } from "three-mesh-bvh";
-import { CANDI, type CandiEntry } from "./candi";
+import { CANDI } from "./candi";
 import type { CameraView, CandiDefinition, CandiModel, Realm } from "./candi/types";
 import { TourController } from "./controls/tour";
 import { WalkController } from "./controls/walk";
@@ -24,6 +24,7 @@ import { createStoneTextures } from "./render/stone";
 import { mountPromo } from "./promo";
 import { mountVisitors } from "./visitors";
 import { enhanceSelect } from "./ui/select";
+import { mountTempleSearch } from "./ui/temple-search";
 
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
@@ -48,11 +49,16 @@ const ui = {
   body: element("info-body"),
   facts: element("info-facts"),
   overview: element<HTMLButtonElement>("info-overview"),
+  places: element("info-places"),
+  sources: element("info-sources"),
+  backToMap: element<HTMLAnchorElement>("back-to-map"),
+  prev: element<HTMLAnchorElement>("candi-prev"),
+  next: element<HTMLAnchorElement>("candi-next"),
   hotspots: element("hotspots"),
   modeButtons: [...document.querySelectorAll<HTMLButtonElement>("[data-mode]")],
   realms: element<HTMLButtonElement>("realms-toggle"),
   legend: element("realm-legend"),
-  picker: element<HTMLSelectElement>("candi-picker"),
+  picker: element("candi-picker"),
   time: element<HTMLInputElement>("time"),
   timeLabel: element<HTMLOutputElement>("time-label"),
   walkHint: element("walk-hint"),
@@ -89,6 +95,23 @@ function start(candi: CandiDefinition): void {
   ui.name.textContent = candi.name;
   ui.location.textContent = candi.location;
   document.title = `Candi Explorer · ${candi.name}`;
+  ui.backToMap.href = `/?from=${candi.id}`;
+  ui.sources.replaceChildren(
+    ...candi.sources.map((s) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = s.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = s.title;
+      a.insertAdjacentHTML(
+        "beforeend",
+        '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5h6.5V10M12.5 3.5L4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="visually-hidden"> (opens in a new tab)</span>',
+      );
+      li.append(a);
+      return li;
+    }),
+  );
   ui.legend.replaceChildren(
     ...(["lower", "middle", "upper"] satisfies Realm[]).map((realm) => {
       const p = document.createElement("p");
@@ -158,7 +181,10 @@ function start(candi: CandiDefinition): void {
     ui.info.classList.remove("collapsed");
     ui.infoToggle.setAttribute("aria-expanded", "true");
     ui.infoToggle.textContent = "Hide notes";
-    for (const h of hotspotEls) h.el.classList.toggle("active", h.topic === key);
+    for (const h of hotspotEls) {
+      h.el.classList.toggle("active", h.topic === key);
+      h.place.toggleAttribute("aria-current", h.topic === key);
+    }
   };
   ui.overview.addEventListener("click", () => showTopic(candi.overviewTopic));
   ui.infoToggle.addEventListener("click", () => {
@@ -167,21 +193,32 @@ function start(candi: CandiDefinition): void {
     ui.infoToggle.textContent = collapsed ? "Show notes" : "Hide notes";
   });
 
-  // Hotspot markers.
+  // Hotspot markers, mirrored as the notes' "Places to look at" list (the keyboard and screen-reader
+  // path to the same views, and usable when a marker is off screen).
   const hotspotEls = candi.hotspots.map((h, i) => {
+    const go = () => {
+      setMode("orbit", false);
+      flyTo(h.view);
+      showTopic(h.topic);
+    };
     const el = document.createElement("button");
     el.type = "button";
     el.className = "hotspot";
     el.innerHTML = `<span class="hotspot-dot" aria-hidden="true">${i + 1}</span><span class="hotspot-label"></span>`;
     el.querySelector(".hotspot-label")!.textContent = h.label;
     el.setAttribute("aria-label", h.label);
-    el.addEventListener("click", () => {
-      setMode("orbit", false);
-      flyTo(h.view);
-      showTopic(h.topic);
-    });
+    el.addEventListener("click", go);
     ui.hotspots.append(el);
-    return { el, topic: h.topic, anchor: new Vector3(...h.anchor) };
+    const li = document.createElement("li");
+    const place = document.createElement("button");
+    place.type = "button";
+    place.className = "info-place";
+    place.innerHTML = `<span class="info-place-number" aria-hidden="true">${i + 1}</span><span></span>`;
+    place.lastElementChild!.textContent = h.label;
+    place.addEventListener("click", go);
+    li.append(place);
+    ui.places.append(li);
+    return { el, place, topic: h.topic, anchor: new Vector3(...h.anchor) };
   });
 
   // Walk and tour.
@@ -339,16 +376,6 @@ function start(candi: CandiDefinition): void {
   ui.loading.hidden = true;
 }
 
-mountPromo(element("promo"));
-mountVisitors(element("visitors"));
-
-// One temple per page: /<id> picks it, `/` is the first. Switching reloads for a clean scene.
-const requested = location.pathname.split("/")[1] ?? "";
-const entry: CandiEntry = CANDI.find((c) => c.id === requested) ?? CANDI[0];
-for (const c of CANDI) ui.picker.add(new Option(c.name, c.id, false, c.id === entry.id));
-enhanceSelect(ui.picker);
-ui.picker.addEventListener("change", () => location.assign(`/${ui.picker.value}`));
-
 const fail = (err: unknown) => {
   console.error(err);
   ui.loading.textContent =
@@ -356,17 +383,49 @@ const fail = (err: unknown) => {
       ? "This browser could not start WebGL, which the 3D view needs. Try a current Chrome, Firefox or Safari."
       : "The temple failed to load. Reload the page to try again.";
 };
-entry.load().then(
-  (candi) =>
-    // Let the loading message paint before the synchronous build.
-    requestAnimationFrame(() =>
-      setTimeout(() => {
-        try {
-          start(candi);
-        } catch (err) {
-          fail(err);
-        }
-      }, 0),
-    ),
-  fail,
-);
+
+// `/` is the map of all temples; `/<id>` opens one. Switching reloads for a clean scene.
+const requested = location.pathname.split("/")[1] ?? "";
+const index = CANDI.findIndex((c) => c.id === requested);
+if (index < 0) {
+  if (requested !== "") history.replaceState(null, "", "/");
+  document.body.dataset.view = "map";
+  const atlas = element("atlas");
+  atlas.hidden = false;
+  ui.loading.hidden = true;
+  import("./map/atlas").then(({ mountAtlas }) => {
+    mountAtlas(atlas, new URLSearchParams(location.search).get("from"));
+    mountPromo(atlas.querySelector<HTMLElement>(".promo")!);
+    mountVisitors(atlas.querySelector<HTMLElement>(".brand-visitors")!);
+  }, fail);
+} else {
+  document.body.dataset.view = "temple";
+  const entry = CANDI[index];
+  mountPromo(element("promo"));
+  mountVisitors(element("visitors"));
+  mountTempleSearch(ui.picker, entry, (c) => location.assign(`/${c.id}`));
+  // Previous / next follow the picker order and wrap around.
+  for (const [link, step, word] of [
+    [ui.prev, -1, "Previous"],
+    [ui.next, 1, "Next"],
+  ] as const) {
+    const other = CANDI[(index + step + CANDI.length) % CANDI.length];
+    link.href = `/${other.id}`;
+    link.setAttribute("aria-label", `${word} temple: ${other.name}`);
+    link.title = `${word}: ${other.name}`;
+  }
+  entry.load().then(
+    (candi) =>
+      // Let the loading message paint before the synchronous build.
+      requestAnimationFrame(() =>
+        setTimeout(() => {
+          try {
+            start(candi);
+          } catch (err) {
+            fail(err);
+          }
+        }, 0),
+      ),
+    fail,
+  );
+}

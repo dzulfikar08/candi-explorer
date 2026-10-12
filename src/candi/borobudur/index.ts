@@ -213,6 +213,11 @@ export const borobudur: CandiDefinition = {
     { name: "Sindoro", lat: -7.3, lon: 109.992, relativeHeight: 2870, kind: "volcano" },
     { name: "Menoreh Hills", lat: -7.7, lon: 110.15, relativeHeight: 650, kind: "ridge" },
   ],
+  sources: [
+    { title: "Borobudur — Wikipedia", url: "https://en.wikipedia.org/wiki/Borobudur" },
+    { title: "Candi Borobudur — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Borobudur" },
+    { title: "Borobudur Temple Compounds — UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/592/" },
+  ],
   orbit: { position: [150, 70, 95], target: [0, 12, 0] },
   realms: {
     lower: "Kamadhatu · base",

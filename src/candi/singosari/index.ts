@@ -79,6 +79,11 @@ export const singosari: CandiDefinition = {
     { name: "Gunung Bromo", lat: -7.9425, lon: 112.953, relativeHeight: 1817, kind: "volcano" },
     { name: "Gunung Semeru", lat: -8.1087, lon: 112.923, relativeHeight: 3164, kind: "volcano" },
   ],
+  sources: [
+    { title: "Singhasari temple — Wikipedia", url: "https://en.wikipedia.org/wiki/Singhasari_temple" },
+    { title: "Candi Singasari — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Candi_Singasari" },
+    { title: "Dwarapala — Wikipedia bahasa Indonesia", url: "https://id.wikipedia.org/wiki/Dwarapala" },
+  ],
   orbit: { position: [-24, 26, 22], target: [0, 7, 0] },
   realms: {
     lower: "Bhurloka · foot",
