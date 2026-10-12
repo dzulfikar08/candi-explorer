@@ -55,10 +55,17 @@ input {
   display: none !important;
 }
 
-.brand {
+.corner {
   position: fixed;
   top: 16px;
   left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 250px;
+}
+
+.brand {
   padding: 10px 16px 12px;
   background: color-mix(in srgb, var(--paper) 95%, transparent);
   border: 1px solid var(--line);
@@ -81,6 +88,84 @@ input {
   margin: 2px 0 0;
   color: var(--ink-muted);
   font-size: 13px;
+}
+
+.brand-credit {
+  margin: 4px 0 0;
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.brand-credit a,
+.promo a {
+  pointer-events: auto;
+  color: inherit;
+  text-underline-offset: 2px;
+}
+
+.brand-credit a:hover,
+.promo-meta a:hover {
+  color: var(--ink);
+}
+
+.promo {
+  padding: 10px 12px 8px;
+  background: color-mix(in srgb, var(--paper) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+
+.promo-card {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 1px 10px;
+  align-items: center;
+  text-decoration: none;
+}
+
+.promo-card img {
+  grid-row: span 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.promo-name {
+  font-weight: 600;
+}
+
+.promo-card:hover .promo-name {
+  color: var(--accent-ink);
+  text-decoration: underline;
+}
+
+/* Two lines reserved so the card doesn't jump as taglines rotate. */
+.promo-tagline {
+  display: -webkit-box;
+  min-height: calc(2 * 1.35em);
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.promo-meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+/* Walking is immersive; keep the screen to the monument. */
+body[data-mode="walk"] .promo {
+  display: none;
 }
 
 .info {
@@ -453,6 +538,32 @@ input {
   }
 
   .legend {
+    display: none;
+  }
+
+  /* Phones: icon + name only, and none during the tour, when the notes sheet rises to the top. */
+  .corner {
+    width: auto;
+    align-items: flex-start;
+  }
+
+  .promo {
+    padding: 6px 10px;
+  }
+
+  .promo-card {
+    grid-template-columns: 20px auto;
+  }
+
+  .promo-card img {
+    grid-row: auto;
+    width: 20px;
+    height: 20px;
+  }
+
+  .promo-tagline,
+  .promo-meta,
+  body[data-mode="tour"] .promo {
     display: none;
   }
 }

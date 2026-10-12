@@ -21,6 +21,7 @@ import { TourController } from "./controls/tour";
 import { WalkController } from "./controls/walk";
 import { createEnvironment } from "./render/environment";
 import { createStoneTextures } from "./render/stone";
+import { mountPromo } from "./promo";
 
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
@@ -314,6 +315,8 @@ function start(candi: CandiDefinition): void {
   if (window.matchMedia("(max-width: 760px)").matches) ui.infoToggle.click();
   ui.loading.hidden = true;
 }
+
+mountPromo(element("promo"));
 
 // Let the loading message paint before the synchronous build.
 requestAnimationFrame(() =>

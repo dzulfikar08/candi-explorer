@@ -38,7 +38,7 @@ bun run test
 
 ## How the model is made
 
-Everything is procedural; there are no model or image assets.
+Everything is procedural; there are no model or texture assets.
 
 - `src/candi/borobudur/layout.ts`: plan geometry in metres: redented square terraces, stair
   notches, niche and stupa placement, stair flights. Counts follow published figures (432 niched
@@ -67,6 +67,14 @@ for the full checklist.
 change `account_id` and `routes` (or drop `routes` and set `"workers_dev": true`). `dist/` is a
 plain static site, so any static host works too.
 
+## Promo card
+
+Under the title, a card rotates (every 5 s) through other products by the same makers: data and
+logic in `src/promo.ts`, icons in `public/ad-icons/`. Links carry `utm_source=candi-explorer`. It
+pauses on hover or focus, stays still with reduced motion, hides in walk mode, and on phones shrinks
+to a name pill and hides during the tour. "Your product here" opens an email for sponsor slots.
+Forks should replace or remove it.
+
 ## Contributing
 
 Bug reports, accuracy corrections with sources, and new candi are welcome. Read
@@ -76,3 +84,6 @@ issues privately as described in [SECURITY.md](SECURITY.md).
 ## License
 
 [MIT](LICENSE) © Dzulfikar Ats Tsauri
+
+The product names and icons in `public/ad-icons/` are trademarks of their owners and are not
+covered by the MIT license.
